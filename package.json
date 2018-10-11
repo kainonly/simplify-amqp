@@ -1,13 +1,9 @@
 {
   "name": "unique",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "ng serve --host 0.0.0.0 --disable-host-check",
+    "build": "ng build --prod --build-optimizer"
   },
   "private": true,
   "dependencies": {
@@ -19,8 +15,11 @@
     "@angular/http": "^6.1.0",
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
+    "@angular/pwa": "^0.8.4",
     "@angular/router": "^6.1.0",
+    "@angular/service-worker": "^6.1.0",
     "core-js": "^2.5.4",
+    "ng-zorro-antd": "^1.6.0",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
   },
