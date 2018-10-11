@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+nz-layout {
+  height: 100%;
+}
+
+nz-layout.main {
+  padding: 12px 16px;
+  overflow: hidden;
+}
+
+nz-content {
+  background-color: #fff;
+}
+
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, .2);
+  margin: 16px 28px 16px 0;
+  float: left;
+}
+
+nz-content {
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  height: 100%;
+}

@@ -1,4 +1,80 @@
-<!-- NG-ZORRO -->
-<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB1NvvIwTtYBeNjy1XdXXXXyVXa-89-131.svg">
-</a>
+<nz-layout class="layout">
+  <nz-header>
+    <div class="logo"></div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
+      <li nz-menu-item><i class="anticon anticon-api"></i> 连接到 Redis 服务器</li>
+      <li nz-menu-item><i class="anticon anticon-download"></i> 导入连接</li>
+      <li nz-menu-item><i class="anticon anticon-upload"></i> 导出连接</li>
+      <li nz-menu-item style="float: right">
+        <i class="anticon anticon-setting"></i> 设置
+      </li>
+    </ul>
+  </nz-header>
+  <nz-layout>
+    <nz-sider>
+      <ul nz-menu [nzMode]="'inline'" style="height:100%">
+        <li nz-submenu>
+          <span title><i class="anticon anticon-tags-o"></i> 阿里云</span>
+          <ul>
+            <li nz-menu-item>option1</li>
+            <li nz-menu-item>option2</li>
+            <li nz-menu-item>option3</li>
+            <li nz-menu-item>option4</li>
+          </ul>
+        </li>
+        <li nz-submenu>
+          <span title><i class="anticon anticon-tags-o"></i> 腾讯云</span>
+          <ul>
+            <li nz-menu-item>option5</li>
+            <li nz-menu-item>option6</li>
+            <li nz-menu-item>option7</li>
+            <li nz-menu-item>option8</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout class="main">
+      <ul nz-menu [nzMode]="'horizontal'">
+        <li nz-menu-item><i class="anticon anticon-database"></i> 服务器信息</li>
+        <li nz-menu-item><i class="anticon anticon-sync"></i> 重连服务器</li>
+        <li nz-menu-item><i class="anticon anticon-code-o"></i> 切换终端</li>
+        <li nz-menu-item><i class="anticon anticon-disconnect"></i> 断开连接</li>
+      </ul>
+      <nz-content>
+        <div nz-row class="content">
+          <div nz-col [nzSpan]="8" style="height: 100%">
+            <nz-table #basicTable
+                      [nzBordered]="false"
+                      [nzSize]="'middle'"
+                      [nzData]="dataSet"
+                      [nzScroll]="{y:'100%'}"
+                      [nzShowPagination]="false">
+              <thead>
+              <tr>
+                <th></th>
+                <th nzShowSort nzSortKey="name" nzShowFilter>
+                  <b>键名</b>
+                </th>
+                <th nzShowFilter>
+                  <b>类型</b>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td></td>
+                <td>
+                  {{data.key}}
+                </td>
+                <td>
+                  <nz-tag [nzColor]="'#108ee9'">{{data.type}}</nz-tag>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>
