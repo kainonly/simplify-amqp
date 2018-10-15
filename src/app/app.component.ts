@@ -8,7 +8,7 @@ export class AppComponent {
   dataSet = [
     {
       type: '字符串',
-      key: 'admin_token_asdadqwqwfvfwerw',
+      key: 'admin_token',
     },
     {
       type: '哈希',
@@ -19,40 +19,12 @@ export class AppComponent {
       key: 'express_order',
     },
     {
-      type: '同组',
+      type: '组',
       key: 'admin'
     },
-    // {
-    //   type: '字符串',
-    //   key: 'admin_token_asdadqwqwfvfwerw',
-    // },
-    // {
-    //   type: '哈希',
-    //   key: 'admin_lists',
-    // },
-    // {
-    //   type: '集合',
-    //   key: 'express_order',
-    // },
-    // {
-    //   type: '同组',
-    //   key: 'admin'
-    // },
-    // {
-    //   type: '字符串',
-    //   key: 'admin_token_asdadqwqwfvfwerw',
-    // },
-    // {
-    //   type: '哈希',
-    //   key: 'admin_lists',
-    // },
-    // {
-    //   type: '集合',
-    //   key: 'express_order',
-    // },
-    // {
-    //   type: '同组',
-    //   key: 'admin'
-    // },
   ];
+
+  editorOptions = {theme: 'vs-dark', language: 'javascript'};
+  code = 'function x() {\nconsole.log("Hello world!");\n}';
+
 }

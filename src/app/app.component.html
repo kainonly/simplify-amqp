@@ -1,4 +1,4 @@
-<nz-layout class="layout">
+<nz-layout>
   <nz-header>
     <div class="logo"></div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
@@ -10,6 +10,7 @@
       </li>
     </ul>
   </nz-header>
+
   <nz-layout>
     <nz-sider>
       <ul nz-menu [nzMode]="'inline'" style="height:100%">
@@ -33,48 +34,27 @@
         </li>
       </ul>
     </nz-sider>
-    <nz-layout class="main">
+    <nz-content>
       <ul nz-menu [nzMode]="'horizontal'">
         <li nz-menu-item><i class="anticon anticon-database"></i> 服务器信息</li>
         <li nz-menu-item><i class="anticon anticon-sync"></i> 重连服务器</li>
         <li nz-menu-item><i class="anticon anticon-code-o"></i> 切换终端</li>
         <li nz-menu-item><i class="anticon anticon-disconnect"></i> 断开连接</li>
       </ul>
-      <nz-content>
-        <div nz-row class="content">
-          <div nz-col [nzSpan]="8" style="height: 100%">
-            <nz-table #basicTable
-                      [nzBordered]="false"
-                      [nzSize]="'middle'"
-                      [nzData]="dataSet"
-                      [nzScroll]="{y:'100%'}"
-                      [nzShowPagination]="false">
-              <thead>
-              <tr>
-                <th></th>
-                <th nzShowSort nzSortKey="name" nzShowFilter>
-                  <b>键名</b>
-                </th>
-                <th nzShowFilter>
-                  <b>类型</b>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let data of basicTable.data">
-                <td></td>
-                <td>
-                  {{data.key}}
-                </td>
-                <td>
-                  <nz-tag [nzColor]="'#108ee9'">{{data.type}}</nz-tag>
-                </td>
-              </tr>
-              </tbody>
-            </nz-table>
-          </div>
-        </div>
-      </nz-content>
-    </nz-layout>
+
+      <div class="main">
+        <perfect-scrollbar style="width: 240px;">
+          <nz-list [nzDataSource]="dataSet"
+                   [nzBordered]="false"
+                   [nzRenderItem]="item">
+            <ng-template #item let-item>
+              <nz-list-item [nzContent]="item.key">
+                <nz-tag [nzColor]="'#108ee9'">{{item.type}}</nz-tag>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </perfect-scrollbar>
+      </div>
+    </nz-content>
   </nz-layout>
 </nz-layout>
