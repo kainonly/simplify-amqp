@@ -11,7 +11,7 @@ type (
 )
 
 func main() {
-
+	SetToken()
 }
 
 func SetToken() {
