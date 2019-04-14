@@ -1,39 +1,25 @@
 package main
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/segmentio/ksuid"
-	"time"
+	"context"
+	"fmt"
+	"github.com/tencentyun/scf-go-lib/cloudfunction"
 )
 
-type (
-	Symbol map[string]interface{}
-)
+type DefineEvent struct {
+	// test event define
+	Key1 string `json:"key1"`
+	Key2 string `json:"key2"`
+	Key3 string `json:"key3"`
+}
+
+func hello(ctx context.Context, event DefineEvent) (string, error) {
+	fmt.Println("key1:", event.Key1)
+	fmt.Println("key2:", event.Key2)
+	fmt.Println("key3:", event.Key3)
+	return fmt.Sprintf("Hello %s!", event.Key1), nil
+}
 
 func main() {
-
-}
-
-func SetToken() {
-	var hmacSampleSecret = []byte("e8NhjiHq86IVfy3nLqN9IdriYryyBPX4K7gNwAaU")
-	jti := ksuid.New().String()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"jti":    jti,
-		"aud":    "",
-		"iss":    "",
-		"exp":    time.Now().Unix() + 1800,
-		"user":   "",
-		"role":   "",
-		"symbol": Symbol{},
-	})
-
-	tokenString, err := token.SignedString(hmacSampleSecret)
-	if err != nil {
-		println(err.Error())
-	}
-	println(tokenString)
-}
-
-func CheckToken() {
-
+	cloudfunction.Start(hello)
 }
