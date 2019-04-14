@@ -1,3 +1,3 @@
 set GOOS=linux
 set GOARCH=amd64
-go build -o main main.go
+go build -o .\dist\main main.go
