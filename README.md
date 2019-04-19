@@ -1,3 +1,3 @@
-# SCF-Token
+# SCF CMQ Collection
 
-Tencent Serverless Cloud Function Token Function
+Tencent Serverless Cloud Function CMQ Collection Function
