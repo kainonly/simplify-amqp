@@ -1,0 +1,22 @@
+{
+  "name": "scf-cmq-collection",
+  "version": "1.0.0",
+  "description": "Tencent Serverless Cloud Function CMQ Collection Function",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kainonly/scf-cmq-collection.git"
+  },
+  "keywords": [
+    "scf",
+    "collection-service"
+  ],
+  "author": "kain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kainonly/scf-cmq-collection/issues"
+  },
+  "homepage": "https://github.com/kainonly/scf-cmq-collection#readme"
+}
