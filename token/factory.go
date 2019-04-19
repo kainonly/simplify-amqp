@@ -8,7 +8,7 @@ import (
 func Factory() string {
 	hmacSampleSecret := []byte("WgjCA%1n8ZidI1Qt")
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS384, jwt.MapClaims{
 		"foo": "bar",
 		"nbf": time.Now().Unix(),
 	})
