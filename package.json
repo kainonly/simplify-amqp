@@ -1,26 +1,20 @@
 {
-  "name": "scf-cmq-collection",
+  "name": "cmq-daq-sdk",
   "version": "1.0.0",
-  "description": "Tencent Serverless Cloud Function CMQ Collection Function",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
   "scripts": {
-    "start": "node index.js"
+    "build": "gulp"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kainonly/scf-cmq-collection.git"
-  },
-  "keywords": [
-    "scf",
-    "collection-service"
-  ],
-  "author": "kain",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kainonly/scf-cmq-collection/issues"
-  },
-  "homepage": "https://github.com/kainonly/scf-cmq-collection#readme",
   "dependencies": {
-    "ioredis": "^4.9.0",
-    "mqtt": "^2.18.8"
+    "cmq-sdk": "^1.0.5"
+  },
+  "devDependencies": {
+    "del": "^4.1.1",
+    "gulp": "^4.0.1",
+    "gulp-typescript": "^5.0.1",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
   }
 }
