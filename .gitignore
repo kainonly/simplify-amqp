@@ -1,5 +1,8 @@
-/.idea
-/.cache
-/node_modules
-package-lock.json
-.env
+# Composer
+composer.phar
+composer.lock
+vendor/
+
+# PHPUnit
+phpunit.phar
+phpunit.xml

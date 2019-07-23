@@ -1,0 +1,24 @@
+{
+  "name": "kain/think-amqp",
+  "description": "Think Bit RabbitMQ 扩展",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kain",
+      "email": "zhangtqx@vip.qq.com"
+    }
+  ],
+  "support": {
+    "docs": "https://think-bit.kain.net.cn",
+    "email": "zhangtqx@vip.qq.com"
+  },
+  "autoload": {
+    "psr-4": {
+      "think\\amqp\\": "src/"
+    }
+  },
+  "require": {
+    "kain/think-bit": "5.1.*",
+    "php-amqplib/php-amqplib": "^2.8"
+  }
+}
