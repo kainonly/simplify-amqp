@@ -4,6 +4,10 @@ namespace think\amqp\common;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
+/**
+ * Class Type
+ * @package think\amqp\common
+ */
 class Type
 {
     protected $channel;

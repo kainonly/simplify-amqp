@@ -13,6 +13,7 @@ use Closure;
 
 /**
  * Class Rabbit
+ * @package think\amqp
  * @method static void start(Closure $closure, array $args = [], array $config = []) 创建默认信道
  * @method static void connect(Closure $closure, array $args = [], array $config = []) 创建自定义信道
  * @method static AMQPStreamConnection native() 获取连接
@@ -26,7 +27,6 @@ use Closure;
  * @method static Exchange exchange(string $exchange) 交换器操作
  * @method static Queue queue(string $queue) 队列操作
  * @method static Consumer consumer(string $consumer) 消费者操作
- * @package bit\facade
  */
 final class Rabbit extends Facade
 {

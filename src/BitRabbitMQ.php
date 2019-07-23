@@ -14,7 +14,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * Class BitRabbitMQ
- * @package think\amqp\common
+ * @package think\amqp
  * @property AMQPStreamConnection $rabbitmq
  * @property AMQPChannel $channel
  */
