@@ -252,9 +252,9 @@ RabbitClient::create(function (RabbitClient $client) {
 - **Return** `mixed`
 
 ```php
-Rabbit::start(function () {
-    Rabbit::exchange('extest')->create('direct');
-    $queue = Rabbit::queue('hello');
+RabbitClient::create(function (RabbitClient $client) {
+    $client->exchange('extest')->create('direct');
+    $queue = $client->queue('hello');
     $queue->create();
     $queue->bind('extest');
     $queue->unbind('extest');
