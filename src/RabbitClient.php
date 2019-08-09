@@ -11,13 +11,19 @@ use think\amqp\common\Exchange;
 use think\amqp\common\Queue;
 
 /**
- * Class RabbitMQ
+ * Class RabbitClient
  * @package van\amqp
- * @property AMQPStreamConnection $rabbitmq
- * @property AMQPChannel $channel
  */
-final class RabbitMQ
+final class RabbitClient
 {
+    /**
+     * @var AMQPStreamConnection
+     */
+    private $connection;
+    /**
+     * @var AMQPChannel
+     */
+    private $channel;
     private static $default_args = [
         'virualhost' => '/',
         'insist' => false,
@@ -32,9 +38,6 @@ final class RabbitMQ
         'channel_rpc_timeout' => 0.0
     ];
 
-    private $rabbitmq;
-    private $channel;
-
     /**
      * 创建默认信道
      * @param Closure $closure
@@ -42,19 +45,19 @@ final class RabbitMQ
      * @param array $config 操作配置
      * @throws \Exception
      */
-    public static function start(
+    public static function create(
         Closure $closure,
         array $args = [],
         array $config = []
     )
     {
-        $rabbitmq = new RabbitMQ();
-        $rabbitmq->createConnection(array_merge(
+        $client = new RabbitClient();
+        $client->createConnection(array_merge(
             self::$default_args,
             config('queue.rabbitmq'),
             $args
         ));
-        $rabbitmq->createChannel($closure, $config);
+        $client->createChannel($closure, $config);
     }
 
     /**
@@ -98,7 +101,9 @@ final class RabbitMQ
             'method_sig' => [0, 0]
         ], $config);
 
-        $this->channel = $this->rabbitmq->channel($config['channel_id']);
+        $this->channel = $this->connection
+            ->channel($config['channel_id']);
+
         if ($config['transaction']) {
             $this->channel->tx_select();
             $result = $closure($this->channel);
@@ -117,7 +122,7 @@ final class RabbitMQ
             $config['method_sig']
         );
 
-        $this->rabbitmq->close(
+        $this->connection->close(
             $config['reply_code'],
             $config['reply_text'],
             $config['method_sig']
@@ -125,19 +130,10 @@ final class RabbitMQ
     }
 
     /**
-     * 获取连接对象
-     * @return AMQPStreamConnection
-     */
-    public function native()
-    {
-        return $this->rabbitmq;
-    }
-
-    /**
      * 获取信道
      * @return AMQPChannel
      */
-    public function channel()
+    public function getChannel()
     {
         return $this->channel;
     }
@@ -150,10 +146,10 @@ final class RabbitMQ
      */
     public function message($text = '', array $config = [])
     {
-        if (is_array($text)) {
-            $text = json_encode($text);
-        }
-        return new AMQPMessage($text, $config);
+        return new AMQPMessage(
+            is_array($text) ? json_encode($text) : $text,
+            $config
+        );
     }
 
     /**
@@ -210,7 +206,11 @@ final class RabbitMQ
      */
     public function nack($delivery_tag, $multiple = false, $requeue = false)
     {
-        $this->channel->basic_nack($delivery_tag, $multiple, $requeue);
+        $this->channel->basic_nack(
+            $delivery_tag,
+            $multiple,
+            $requeue
+        );
     }
 
     /**
