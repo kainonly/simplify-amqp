@@ -1,14 +1,14 @@
 <?php
 
-namespace think\amqp\common;
+namespace van\amqp\common;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
  * Class Type
- * @package think\amqp\common
+ * @package van\amqp\common
  */
-class Type
+abstract class Type
 {
     protected $channel;
     protected $name;

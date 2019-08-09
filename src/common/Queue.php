@@ -1,14 +1,12 @@
 <?php
 
-namespace think\amqp\common;
+namespace van\amqp\common;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
  * Class Queue
- * @package think\amqp\common
- * @property AMQPChannel $channel 信道
- * @property string $name 队列名称
+ * @package van\amqp\common
  */
 final class Queue extends Type
 {

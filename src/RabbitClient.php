@@ -6,9 +6,9 @@ use Closure;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use think\amqp\common\Consumer;
-use think\amqp\common\Exchange;
-use think\amqp\common\Queue;
+use van\amqp\common\Consumer;
+use van\amqp\common\Exchange;
+use van\amqp\common\Queue;
 
 /**
  * Class RabbitClient
