@@ -2,22 +2,19 @@
   "name": "kain/van-amqp",
   "description": "RabbitMQ Operate Library",
   "license": "MIT",
-  "authors": [
-    {
-      "name": "kain",
-      "email": "zhangtqx@vip.qq.com"
-    }
-  ],
-  "support": {
-    "docs": "https://think-bit.kain.net.cn",
-    "email": "zhangtqx@vip.qq.com"
+  "require": {
+    "php": ">=5.6.0",
+    "php-amqplib/php-amqplib": "^2.8"
   },
   "autoload": {
     "psr-4": {
       "van\\amqp\\": "src/"
     }
   },
-  "require": {
-    "php-amqplib/php-amqplib": "^2.8"
-  }
+  "authors": [
+    {
+      "name": "kain",
+      "email": "zhangtqx@vip.qq.com"
+    }
+  ]
 }
