@@ -1,7 +1,7 @@
-Think AMQP
+VAN AMQP
 =======
 
-Think Bit RabbitMQ 扩展
+RabbitMQ Operate Library
 
 ![Packagist Version](https://img.shields.io/packagist/v/kain/think-amqp.svg?style=flat-square)
 ![Packagist](https://img.shields.io/packagist/dt/kain/think-amqp.svg?color=blue&style=flat-square)
@@ -11,5 +11,5 @@ Think Bit RabbitMQ 扩展
 #### 安装
 
 ```shell
-composer require kain/think-amqp
+composer require kain/van-amqp
 ```

@@ -1,6 +1,6 @@
 {
-  "name": "kain/think-amqp",
-  "description": "Think Bit RabbitMQ 扩展",
+  "name": "kain/van-amqp",
+  "description": "RabbitMQ Operate Library",
   "license": "MIT",
   "authors": [
     {
@@ -14,11 +14,10 @@
   },
   "autoload": {
     "psr-4": {
-      "think\\amqp\\": "src/"
+      "van\\amqp\\": "src/"
     }
   },
   "require": {
-    "kain/think-bit": "5.1.*",
     "php-amqplib/php-amqplib": "^2.8"
   }
 }

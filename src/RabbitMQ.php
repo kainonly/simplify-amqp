@@ -1,24 +1,22 @@
 <?php
 
-namespace think\amqp;
+namespace van\amqp;
 
 use Closure;
-use think\facade\Config;
-use think\amqp\common\Consumer;
-use think\amqp\common\Queue;
-use think\amqp\common\Exchange;
 use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-
+use PhpAmqpLib\Message\AMQPMessage;
+use think\amqp\common\Consumer;
+use think\amqp\common\Exchange;
+use think\amqp\common\Queue;
 
 /**
- * Class BitRabbitMQ
- * @package think\amqp
+ * Class RabbitMQ
+ * @package van\amqp
  * @property AMQPStreamConnection $rabbitmq
  * @property AMQPChannel $channel
  */
-final class BitRabbitMQ
+final class RabbitMQ
 {
     private static $default_args = [
         'virualhost' => '/',
@@ -42,33 +40,27 @@ final class BitRabbitMQ
      * @param Closure $closure
      * @param array $args 连接参数
      * @param array $config 操作配置
+     * @throws \Exception
      */
-    public function start(Closure $closure, array $args = [], array $config = [])
+    public static function start(
+        Closure $closure,
+        array $args = [],
+        array $config = []
+    )
     {
-        // 组合连接参数
-        $args = array_merge(BitRabbitMQ::$default_args, Config::get('queue.rabbitmq'), $args);
-        // 初始化连接
-        $this->createConnection($args);
-        // 创建信道
-        $this->createChannel($closure, $config);
+        $rabbitmq = new RabbitMQ();
+        $rabbitmq->createConnection(array_merge(
+            self::$default_args,
+            config('queue.rabbitmq'),
+            $args
+        ));
+        $rabbitmq->createChannel($closure, $config);
     }
 
     /**
-     * 创建自定义信道
-     * @param Closure $closure
-     * @param array $args 连接参数
-     * @param array $config 操作配置
+     * 连接参数
+     * @param array $args
      */
-    public function connect(Closure $closure, array $args = [], array $config = [])
-    {
-        // 组合连接参数
-        $args = array_merge(BitRabbitMQ::$default_args, $args);
-        // 初始化连接
-        $this->createConnection($args);
-        // 创建信道
-        $this->createChannel($closure, $config);
-    }
-
     private function createConnection($args = [])
     {
         $this->rabbitmq = new AMQPStreamConnection(
@@ -94,6 +86,7 @@ final class BitRabbitMQ
      * 创建信道
      * @param Closure $closure
      * @param array $config 操作配置
+     * @throws \Exception
      */
     private function createChannel(Closure $closure, $config = [])
     {
@@ -118,8 +111,17 @@ final class BitRabbitMQ
             $closure($this->channel);
         }
 
-        $this->channel->close($config['reply_code'], $config['reply_text'], $config['method_sig']);
-        $this->rabbitmq->close($config['reply_code'], $config['reply_text'], $config['method_sig']);
+        $this->channel->close(
+            $config['reply_code'],
+            $config['reply_text'],
+            $config['method_sig']
+        );
+
+        $this->rabbitmq->close(
+            $config['reply_code'],
+            $config['reply_text'],
+            $config['method_sig']
+        );
     }
 
     /**
