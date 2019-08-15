@@ -1,52 +1,54 @@
 <?php
 
-namespace van\amqp\common;
+namespace tidy\amqp\common;
 
-use PhpAmqpLib\Channel\AMQPChannel;
+use Closure;
 
 /**
  * Class Consumer
- * @package van\amqp\common
+ * @package tidy\amqp\common
  */
 final class Consumer extends Type
 {
     /**
-     * 启用消费者
-     * @param string $queue 队列名称
-     * @param array $config 操作配置
+     * Create Consumer
+     * @param string $queueName queue name
+     * @param Closure $subscribe Subscribe
+     * @param array $config operate config
      * @return mixed|string
      */
-    public function start($queue, array $config = [])
+    public function create(string $queueName,
+                           Closure $subscribe,
+                           array $config = [])
     {
         $config = array_merge([
             'no_local' => false,
             'no_ack' => false,
             'exclusive' => false,
             'nowait' => false,
-            'callback' => null,
             'ticket' => null,
             'arguments' => []
         ], $config);
 
         return $this->channel->basic_consume(
-            $queue,
+            $queueName,
             $this->name,
             $config['no_local'],
             $config['no_ack'],
             $config['exclusive'],
             $config['nowait'],
-            $config['callback'],
+            $subscribe,
             $config['ticket'],
             $config['arguments']
         );
     }
 
     /**
-     * 结束消费者
-     * @param array $config 操作配置
+     * Unsubscribe
+     * @param array $config operate config
      * @return mixed
      */
-    public function cancel(array $config = [])
+    public function unsubscribe(array $config = [])
     {
         $config = array_merge([
             'nowait' => false,

@@ -1,19 +1,34 @@
 <?php
 
-namespace van\amqp\common;
+namespace tidy\amqp\common;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
  * Class Type
- * @package van\amqp\common
+ * @package tidy\amqp\common
  */
 abstract class Type
 {
+    /**
+     * Operate Channel
+     * @var AMQPChannel
+     */
     protected $channel;
+
+    /**
+     * Operate Name
+     * @var string
+     */
     protected $name;
 
-    public function __construct(AMQPChannel $channel, $name)
+    /**
+     * Type constructor.
+     * @param AMQPChannel $channel
+     * @param string $name
+     */
+    public function __construct(AMQPChannel $channel,
+                                string $name)
     {
         $this->channel = $channel;
         $this->name = $name;

@@ -1,15 +1,13 @@
 {
-  "name": "kain/van-amqp",
-  "description": "RabbitMQ Operate Library",
-  "license": "MIT",
+  "name": "kain/tidy-amqp",
+  "description": "Tidy RabbitMQ AMQP Library",
   "require": {
     "php": ">=5.6.0",
-    "ext-amqp": "*",
     "php-amqplib/php-amqplib": "^2.8"
   },
   "autoload": {
     "psr-4": {
-      "van\\amqp\\": "src/"
+      "tidy\\amqp\\": "src/"
     }
   },
   "authors": [
@@ -17,5 +15,6 @@
       "name": "kain",
       "email": "zhangtqx@vip.qq.com"
     }
-  ]
+  ],
+  "license": "MIT"
 }

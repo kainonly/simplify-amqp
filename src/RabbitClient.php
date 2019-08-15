@@ -1,97 +1,80 @@
 <?php
 
-namespace van\amqp;
+namespace tidy\amqp;
 
 use Closure;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use van\amqp\common\Consumer;
-use van\amqp\common\Exchange;
-use van\amqp\common\Queue;
+use tidy\amqp\common\Consumer;
+use tidy\amqp\common\Exchange;
+use tidy\amqp\common\Queue;
 
 /**
  * Class RabbitClient
- * @package van\amqp
+ * @package tidy\amqp
  */
 final class RabbitClient
 {
     /**
+     * AMQP Connection
      * @var AMQPStreamConnection
      */
     private $connection;
+
     /**
+     * AMQP Channel
      * @var AMQPChannel
      */
     private $channel;
-    private static $default_args = [
-        'virualhost' => '/',
-        'insist' => false,
-        'login_method' => 'AMQPLAIN',
-        'login_response' => null,
-        'locale' => 'en_US',
-        'connection_timeout' => 3.0,
-        'read_write_timeout' => 3.0,
-        'context' => null,
-        'keepalive' => false,
-        'heartbeat' => 0,
-        'channel_rpc_timeout' => 0.0
-    ];
 
     /**
-     * 创建默认信道
-     * @param Closure $closure
-     * @param array $args 连接参数
-     * @param array $config 操作配置
-     * @throws \Exception
+     * RabbitClient constructor.
+     * @param array $options Connection Options
      */
-    public static function create(
-        Closure $closure,
-        array $args = [],
-        array $config = []
-    )
+    public function __construct(array $options = [])
     {
-        $client = new RabbitClient();
-        $client->createConnection(array_merge(
-            self::$default_args,
-            config('queue.rabbitmq'),
-            $args
-        ));
-        $client->createChannel($closure, $config);
-    }
+        $_options = array_merge([
+            'virualhost' => '/',
+            'insist' => false,
+            'login_method' => 'AMQPLAIN',
+            'login_response' => null,
+            'locale' => 'en_US',
+            'connection_timeout' => 3.0,
+            'read_write_timeout' => 3.0,
+            'context' => null,
+            'keepalive' => false,
+            'heartbeat' => 0,
+            'channel_rpc_timeout' => 0.0
+        ], $options);
 
-    /**
-     * 连接参数
-     * @param array $args
-     */
-    private function createConnection($args = [])
-    {
         $this->rabbitmq = new AMQPStreamConnection(
-            $args['hostname'],
-            $args['port'],
-            $args['username'],
-            $args['password'],
-            $args['virualhost'],
-            $args['insist'],
-            $args['login_method'],
-            $args['login_response'],
-            $args['locale'],
-            $args['connection_timeout'],
-            $args['read_write_timeout'],
-            $args['context'],
-            $args['keepalive'],
-            $args['heartbeat'],
-            $args['channel_rpc_timeout']
+            $_options['hostname'],
+            $_options['port'],
+            $_options['username'],
+            $_options['password'],
+            $_options['virualhost'],
+            $_options['insist'],
+            $_options['login_method'],
+            $_options['login_response'],
+            $_options['locale'],
+            $_options['connection_timeout'],
+            $_options['read_write_timeout'],
+            $_options['context'],
+            $_options['keepalive'],
+            $_options['heartbeat'],
+            $_options['channel_rpc_timeout']
         );
     }
 
     /**
-     * 创建信道
+     * Create Channel
      * @param Closure $closure
-     * @param array $config 操作配置
+     * @param array $config Operate Config
      * @throws \Exception
      */
-    private function createChannel(Closure $closure, $config = [])
+    public function channel(Closure $closure,
+                            array $config = [])
     {
         $config = array_merge([
             'transaction' => false,
@@ -107,6 +90,7 @@ final class RabbitClient
         if ($config['transaction']) {
             $this->channel->tx_select();
             $result = $closure($this->channel);
+
             if ($result) {
                 $this->channel->tx_commit();
             } else {
@@ -130,7 +114,7 @@ final class RabbitClient
     }
 
     /**
-     * 获取信道
+     * get Channel
      * @return AMQPChannel
      */
     public function getChannel()
@@ -139,12 +123,13 @@ final class RabbitClient
     }
 
     /**
-     * 创建消息对象
-     * @param string|array $text 消息
-     * @param array $config 配置
+     * Create Message
+     * @param string|array $text Message Body
+     * @param array $config Operate Config
      * @return AMQPMessage
      */
-    public function message($text = '', array $config = [])
+    public function message($text = '',
+                            array $config = [])
     {
         return new AMQPMessage(
             is_array($text) ? json_encode($text) : $text,
@@ -153,11 +138,12 @@ final class RabbitClient
     }
 
     /**
-     * 发布消息
-     * @param string|array $text 文本
-     * @param array $config 配置
+     * Publish Message
+     * @param string|array $text Message Body
+     * @param array $config Operate Config
      */
-    public function publish($text = '', array $config = [])
+    public function publish($text = '',
+                            array $config = [])
     {
 
         $config = array_merge([
@@ -179,32 +165,36 @@ final class RabbitClient
     }
 
     /**
-     * 确认消息
-     * @param string $delivery_tag 标识
-     * @param bool $multiple 批量
+     * Ack Message
+     * @param string $delivery_tag Tag
+     * @param bool $multiple Multiple
      */
-    public function ack($delivery_tag, $multiple = false)
+    public function ack(string $delivery_tag,
+                        bool $multiple = false)
     {
         $this->channel->basic_ack($delivery_tag, $multiple);
     }
 
     /**
-     * 拒绝传入的消息
-     * @param string $delivery_tag 标识
-     * @param bool $requeue 重新发送
+     * Reject Message
+     * @param string $delivery_tag Tag
+     * @param bool $requeue Reset Message
      */
-    public function reject($delivery_tag, $requeue = false)
+    public function reject(string $delivery_tag,
+                           bool $requeue = false)
     {
         $this->channel->basic_reject($delivery_tag, $requeue);
     }
 
     /**
-     * 拒绝一个或多个收到的消息
-     * @param string $delivery_tag 标识
-     * @param bool $multiple 批量
-     * @param bool $requeue 重新发送
+     * Nack Message
+     * @param string $delivery_tag Tag
+     * @param bool $multiple Mulitple
+     * @param bool $requeue Reset Message
      */
-    public function nack($delivery_tag, $multiple = false, $requeue = false)
+    public function nack(string $delivery_tag,
+                         bool $multiple = false,
+                         bool $requeue = false)
     {
         $this->channel->basic_nack(
             $delivery_tag,
@@ -214,42 +204,51 @@ final class RabbitClient
     }
 
     /**
-     * 重新发送未确认的消息
-     * @param bool $requeue 重新发送
+     * Revover Message
+     * @param bool $requeue Reset Message
      * @return mixed
      */
-    public function revover($requeue = false)
+    public function revover(bool $requeue = false)
     {
         return $this->channel->basic_recover($requeue);
     }
 
     /**
-     * 交换器操作类
-     * @param $exchange
+     * Create Exchange Operate
+     * @param string $exchangeName exchange name
      * @return Exchange
      */
-    public function exchange($exchange)
+    public function exchange(string $exchangeName)
     {
-        return new Exchange($this->channel, $exchange);
+        return new Exchange(
+            $this->channel,
+            $exchangeName
+        );
     }
 
     /**
-     * 队列操作类
-     * @param string $queue 队列名称
+     * Create Queue Operate
+     * @param string $queueName queue name
      * @return Queue
      */
-    public function queue($queue)
+    public function queue(string $queueName)
     {
-        return new Queue($this->channel, $queue);
+        return new Queue(
+            $this->channel,
+            $queueName
+        );
     }
 
     /**
-     * 消费者操作类
-     * @param string $consumer 消费者名称
+     * Create Consumer Operate
+     * @param string $consumer cusumer name
      * @return Consumer
      */
-    public function consumer($consumer)
+    public function consumer(string $consumerName)
     {
-        return new Consumer($this->channel, $consumer);
+        return new Consumer(
+            $this->channel,
+            $consumerName
+        );
     }
 }

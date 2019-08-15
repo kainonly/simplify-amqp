@@ -1,18 +1,16 @@
 <?php
 
-namespace van\amqp\common;
-
-use PhpAmqpLib\Channel\AMQPChannel;
+namespace tidy\amqp\common;
 
 /**
  * Class Queue
- * @package van\amqp\common
+ * @package tidy\amqp\common
  */
 final class Queue extends Type
 {
     /**
-     * 声明队列
-     * @param array $config 操作配置
+     * Declare Queue
+     * @param array $config operate config
      * @return mixed|null
      */
     public function create(array $config = [])
@@ -40,12 +38,13 @@ final class Queue extends Type
     }
 
     /**
-     * 绑定队列
-     * @param string $exchange 交换器名称
-     * @param array $config 操作配置
+     * Bind Exchange
+     * @param string $exchangeName exchange name
+     * @param array $config operate config
      * @return mixed|null
      */
-    public function bind($exchange, array $config = [])
+    public function bind(string $exchangeName,
+                         array $config = [])
     {
         $config = array_merge([
             'routing_key' => '',
@@ -56,7 +55,7 @@ final class Queue extends Type
 
         return $this->channel->queue_bind(
             $this->name,
-            $exchange,
+            $exchangeName,
             $config['routing_key'],
             $config['nowait'],
             $config['arguments'],
@@ -65,12 +64,13 @@ final class Queue extends Type
     }
 
     /**
-     * 解除绑定
-     * @param string $exchange 交换器名称
-     * @param array $config 操作配置
+     * Unbind Exchange
+     * @param string $exchangeName exchange name
+     * @param array $config operate config
      * @return mixed
      */
-    public function unbind($exchange, array $config = [])
+    public function unbind(string $exchangeName,
+                           array $config = [])
     {
         $config = array_merge([
             'routing_key' => '',
@@ -80,7 +80,7 @@ final class Queue extends Type
 
         return $this->channel->queue_unbind(
             $this->name,
-            $exchange,
+            $exchangeName,
             $config['routing_key'],
             $config['arguments'],
             $config['ticket']
@@ -88,8 +88,8 @@ final class Queue extends Type
     }
 
     /**
-     * 清除队列
-     * @param array $config 操作配置
+     * Purge Queue
+     * @param array $config operate config
      * @return mixed|null
      */
     public function purge(array $config = [])
@@ -107,8 +107,8 @@ final class Queue extends Type
     }
 
     /**
-     * 删除队列
-     * @param array $config 操作配置
+     * Delete Queue
+     * @param array $config operate config
      * @return mixed|null
      */
     public function delete(array $config = [])
@@ -130,8 +130,8 @@ final class Queue extends Type
     }
 
     /**
-     * 获取队列信息
-     * @param array $config 操作配置
+     * Get Queue
+     * @param array $config operate config
      * @return mixed
      */
     public function get(array $config = [])

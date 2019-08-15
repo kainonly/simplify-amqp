@@ -1,22 +1,21 @@
 <?php
 
-namespace van\amqp\common;
-
-use PhpAmqpLib\Channel\AMQPChannel;
+namespace tidy\amqp\common;
 
 /**
  * Class Exchange
- * @package van\amqp\common
+ * @package tidy\amqp\common
  */
 final class Exchange extends Type
 {
     /**
-     * 声明交换器
-     * @param string $type 交换器类型
-     * @param array $config 操作配置
+     * Declare Exchange
+     * @param string $type exchange type
+     * @param array $config operate config
      * @return mixed|null
      */
-    public function create($type, array $config = [])
+    public function create(string $type,
+                           array $config = [])
     {
         $config = array_merge([
             'passive' => false,
@@ -42,12 +41,13 @@ final class Exchange extends Type
     }
 
     /**
-     * 起源交换器绑定交换器
-     * @param string $destination 绑定交换器
-     * @param array $config 操作配置
+     * Bind Exchange
+     * @param string $destination dest exchange
+     * @param array $config config
      * @return mixed|null
      */
-    public function bind($destination, array $config = [])
+    public function bind(string $destination,
+                         array $config = [])
     {
         $config = array_merge([
             'routing_key' => '',
@@ -67,12 +67,13 @@ final class Exchange extends Type
     }
 
     /**
-     * 起源交换器解除绑定的交换器
-     * @param string $destination 绑定交换器
-     * @param array $config 操作配置
+     * Unbind Exchange
+     * @param string $destination dest exchange
+     * @param array $config operate config
      * @return mixed
      */
-    public function unbind($destination, array $config = [])
+    public function unbind(string $destination,
+                           array $config = [])
     {
         $config = array_merge([
             'routing_key' => '',
@@ -92,8 +93,8 @@ final class Exchange extends Type
     }
 
     /**
-     * 删除交换器
-     * @param array $config 操作配置
+     * Delete Exchange
+     * @param array $config operate config
      * @return mixed|null
      */
     public function delete(array $config = [])
