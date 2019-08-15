@@ -48,7 +48,7 @@ final class RabbitClient
             'channel_rpc_timeout' => 0.0
         ], $options);
 
-        $this->rabbitmq = new AMQPStreamConnection(
+        $this->connection = new AMQPStreamConnection(
             $_options['hostname'],
             $_options['port'],
             $_options['username'],

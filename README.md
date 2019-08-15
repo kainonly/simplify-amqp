@@ -12,3 +12,38 @@ Tidy RabbitMQ AMQP Library
 ```shell
 composer require kain/tidy-amqp
 ```
+
+#### Tutorials
+
+Create RabbitClient
+
+```php
+$client = new RabbitClient([
+    'hostname' => '127.0.0.1',
+    'port' => 5672,
+    'username' => 'guest',
+    'password' => 'guest'
+]);
+```
+
+Create Channel
+
+```php
+$client->channel(function () use ($client) {
+    // operation...
+});
+```
+
+Create Queue Operate
+
+```php
+$client->channel(function () use ($client) {
+    $client->queue('hello')->create();
+});
+```
+
+Create Message
+
+```php
+$message = $client->message('one');
+```
