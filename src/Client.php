@@ -207,12 +207,9 @@ final class Client
      * @param string $exchangeName exchange name
      * @return Exchange
      */
-    public function exchange(string $exchangeName)
+    public function exchange(string $exchangeName): Exchange
     {
-        return new Exchange(
-            $this->channel,
-            $exchangeName
-        );
+        return new Exchange($this->channel, $exchangeName);
     }
 
     /**
@@ -220,12 +217,9 @@ final class Client
      * @param string $queueName queue name
      * @return Queue
      */
-    public function queue(string $queueName)
+    public function queue(string $queueName): Queue
     {
-        return new Queue(
-            $this->channel,
-            $queueName
-        );
+        return new Queue($this->channel, $queueName);
     }
 
     /**
@@ -233,11 +227,8 @@ final class Client
      * @param string $consumer cusumer name
      * @return Consumer
      */
-    public function consumer(string $consumerName)
+    public function consumer(string $consumerName): Consumer
     {
-        return new Consumer(
-            $this->channel,
-            $consumerName
-        );
+        return new Consumer($this->channel, $consumerName);
     }
 }

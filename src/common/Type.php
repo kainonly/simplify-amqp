@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace tidy\amqp\common;
 
@@ -27,8 +28,7 @@ abstract class Type
      * @param AMQPChannel $channel
      * @param string $name
      */
-    public function __construct(AMQPChannel $channel,
-                                string $name)
+    public function __construct(AMQPChannel $channel, string $name)
     {
         $this->channel = $channel;
         $this->name = $name;
