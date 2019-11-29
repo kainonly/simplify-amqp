@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace tidy\amqp;
 
@@ -11,10 +12,10 @@ use tidy\amqp\common\Exchange;
 use tidy\amqp\common\Queue;
 
 /**
- * Class RabbitClient
+ * Class Client
  * @package tidy\amqp
  */
-final class RabbitClient
+final class Client
 {
     /**
      * AMQP Connection
@@ -73,8 +74,7 @@ final class RabbitClient
      * @param array $config Operate Config
      * @throws \Exception
      */
-    public function channel(Closure $closure,
-                            array $config = [])
+    public function channel(Closure $closure, array $config = [])
     {
         $config = array_merge([
             'transaction' => false,
@@ -117,35 +117,29 @@ final class RabbitClient
      * get Channel
      * @return AMQPChannel
      */
-    public function getChannel()
+    public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }
 
     /**
      * Create Message
-     * @param string|array $text Message Body
+     * @param string $text Message Body
      * @param array $config Operate Config
      * @return AMQPMessage
      */
-    public function message($text = '',
-                            array $config = [])
+    public function message(string $text, array $config = []): AMQPMessage
     {
-        return new AMQPMessage(
-            is_array($text) ? json_encode($text) : $text,
-            $config
-        );
+        return new AMQPMessage($text, $config);
     }
 
     /**
      * Publish Message
-     * @param string|array $text Message Body
+     * @param string $text Message Body
      * @param array $config Operate Config
      */
-    public function publish($text = '',
-                            array $config = [])
+    public function publish(string $text, array $config = [])
     {
-
         $config = array_merge([
             'exchange' => '',
             'routing_key' => '',
@@ -153,7 +147,6 @@ final class RabbitClient
             'immediate' => false,
             'ticket' => null
         ], $config);
-
         $this->channel->basic_publish(
             $this->message($text),
             $config['exchange'],
@@ -169,8 +162,7 @@ final class RabbitClient
      * @param string $delivery_tag Tag
      * @param bool $multiple Multiple
      */
-    public function ack(string $delivery_tag,
-                        bool $multiple = false)
+    public function ack(string $delivery_tag, bool $multiple = false)
     {
         $this->channel->basic_ack($delivery_tag, $multiple);
     }
@@ -180,8 +172,7 @@ final class RabbitClient
      * @param string $delivery_tag Tag
      * @param bool $requeue Reset Message
      */
-    public function reject(string $delivery_tag,
-                           bool $requeue = false)
+    public function reject(string $delivery_tag, bool $requeue = false)
     {
         $this->channel->basic_reject($delivery_tag, $requeue);
     }
@@ -192,9 +183,7 @@ final class RabbitClient
      * @param bool $multiple Mulitple
      * @param bool $requeue Reset Message
      */
-    public function nack(string $delivery_tag,
-                         bool $multiple = false,
-                         bool $requeue = false)
+    public function nack(string $delivery_tag, bool $multiple = false, bool $requeue = false)
     {
         $this->channel->basic_nack(
             $delivery_tag,
