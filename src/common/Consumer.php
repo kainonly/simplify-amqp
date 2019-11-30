@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace tidy\amqp\common;
 
@@ -7,6 +8,7 @@ use Closure;
 /**
  * Class Consumer
  * @package tidy\amqp\common
+ * @inheritDoc
  */
 final class Consumer extends Type
 {
@@ -17,9 +19,7 @@ final class Consumer extends Type
      * @param array $config operate config
      * @return mixed|string
      */
-    public function create(string $queueName,
-                           Closure $subscribe,
-                           array $config = [])
+    public function create(string $queueName, Closure $subscribe, array $config = [])
     {
         $config = array_merge([
             'no_local' => false,
