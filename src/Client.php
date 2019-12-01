@@ -30,13 +30,19 @@ final class Client
     private $channel;
 
     /**
-     * RabbitClient constructor.
+     * Client constructor.
      * @param array $options Connection Options
      */
-    public function __construct(array $options = [])
+    public function __construct(
+        string $hostname,
+        int $port,
+        string $username,
+        string $password,
+        string $virualhost = '/',
+        array $options = []
+    )
     {
         $_options = array_merge([
-            'virualhost' => '/',
             'insist' => false,
             'login_method' => 'AMQPLAIN',
             'login_response' => null,
@@ -46,15 +52,15 @@ final class Client
             'context' => null,
             'keepalive' => false,
             'heartbeat' => 0,
-            'channel_rpc_timeout' => 0.0
+            'channel_rpc_timeout' => 0.0,
+            'ssl_protocol' => null
         ], $options);
-
         $this->connection = new AMQPStreamConnection(
-            $_options['hostname'],
-            $_options['port'],
-            $_options['username'],
-            $_options['password'],
-            $_options['virualhost'],
+            $hostname,
+            $port,
+            $username,
+            $password,
+            $virualhost,
             $_options['insist'],
             $_options['login_method'],
             $_options['login_response'],
@@ -64,7 +70,8 @@ final class Client
             $_options['context'],
             $_options['keepalive'],
             $_options['heartbeat'],
-            $_options['channel_rpc_timeout']
+            $_options['channel_rpc_timeout'],
+            $_options['ssl_protocol']
         );
     }
 
@@ -111,15 +118,6 @@ final class Client
             $config['reply_text'],
             $config['method_sig']
         );
-    }
-
-    /**
-     * get Channel
-     * @return AMQPChannel
-     */
-    public function getChannel(): AMQPChannel
-    {
-        return $this->channel;
     }
 
     /**
