@@ -66,85 +66,84 @@ final class Queue extends Type
     /**
      * Unbind Exchange
      * @param string $exchangeName exchange name
-     * @param array $config operate config
+     * @param array $options
      * @return mixed
      */
-    public function unbind(string $exchangeName,
-                           array $config = [])
+    public function unbind(string $exchangeName, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'routing_key' => '',
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->queue_unbind(
             $this->name,
             $exchangeName,
-            $config['routing_key'],
-            $config['arguments'],
-            $config['ticket']
+            $options['routing_key'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
     /**
      * Purge Queue
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|null
      */
-    public function purge(array $config = [])
+    public function purge(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'nowait' => false,
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->queue_purge(
             $this->name,
-            $config['nowait'],
-            $config['ticket']
+            $options['nowait'],
+            $options['ticket']
         );
     }
 
     /**
      * Delete Queue
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|null
      */
-    public function delete(array $config = [])
+    public function delete(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'if_unused' => false,
             'if_empty' => false,
             'nowait' => false,
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->queue_delete(
             $this->name,
-            $config['if_unused'],
-            $config['if_empty'],
-            $config['nowait'],
-            $config['ticket']
+            $options['if_unused'],
+            $options['if_empty'],
+            $options['nowait'],
+            $options['ticket']
         );
     }
 
     /**
      * Get Queue
-     * @param array $config operate config
+     * @param array $options
      * @return mixed
      */
-    public function get(array $config = [])
+    public function get(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'no_ack' => false,
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->basic_get(
             $this->name,
-            $config['no_ack'],
-            $config['ticket']
+            $options['no_ack'],
+            $options['ticket']
         );
     }
 }
