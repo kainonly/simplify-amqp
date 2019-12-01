@@ -44,9 +44,12 @@ class ExchangeTest extends TestCase
                 $message = $this->client->message(json_encode([
                     'version' => 'tidy'
                 ]));
-                $this->client->publish();
+                $this->client->publish(
+                    $message,
+                    'tidy',
+                    ''
+                );
             });
-
         } catch (\Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
