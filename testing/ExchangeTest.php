@@ -9,17 +9,22 @@ use tidy\amqp\Client;
 
 class ExchangeTest extends TestCase
 {
+    /**
+     * @var Client
+     */
+    private $client;
+
     public function testCreateExchange()
     {
         try {
-            $client = new Client(
+            $this->client = new Client(
                 getenv('hostname'),
                 (int)getenv('port'),
                 getenv('username'),
                 getenv('password')
             );
-            $client->channel(function () use ($client) {
-                $result = $client
+            $this->client->channel(function () {
+                $result = $this->client
                     ->exchange('tidy')
                     ->create('direct');
                 $this->assertNull($result, 'Create Exchange Failed');
@@ -28,4 +33,23 @@ class ExchangeTest extends TestCase
             $this->expectErrorMessage($e->getMessage());
         }
     }
+
+    /**
+     * @depends testCreateExchange
+     */
+    public function testSendMessage()
+    {
+        try {
+            $this->client->channel(function () {
+                $message = $this->client->message(json_encode([
+                    'version' => 'tidy'
+                ]));
+                $this->client->publish();
+            });
+
+        } catch (\Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
 }

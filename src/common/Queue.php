@@ -11,12 +11,12 @@ final class Queue extends Type
 {
     /**
      * Declare Queue
-     * @param array $config operate config
-     * @return mixed|null
+     * @param array $options
+     * @return array|null
      */
-    public function create(array $config = [])
+    public function create(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'passive' => false,
             'durable' => false,
             'exclusive' => false,
@@ -24,43 +24,42 @@ final class Queue extends Type
             'nowait' => false,
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->queue_declare(
             $this->name,
-            $config['passive'],
-            $config['durable'],
-            $config['exclusive'],
-            $config['auto_delete'],
-            $config['nowait'],
-            $config['arguments'],
-            $config['ticket']
+            $options['passive'],
+            $options['durable'],
+            $options['exclusive'],
+            $options['auto_delete'],
+            $options['nowait'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
     /**
      * Bind Exchange
      * @param string $exchangeName exchange name
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|null
      */
-    public function bind(string $exchangeName,
-                         array $config = [])
+    public function bind(string $exchangeName, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'routing_key' => '',
             'nowait' => false,
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->queue_bind(
             $this->name,
             $exchangeName,
-            $config['routing_key'],
-            $config['nowait'],
-            $config['arguments'],
-            $config['ticket']
+            $options['routing_key'],
+            $options['nowait'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
