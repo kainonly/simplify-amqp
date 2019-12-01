@@ -12,13 +12,12 @@ final class Exchange extends Type
     /**
      * Declare Exchange
      * @param string $type exchange type
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|null
      */
-    public function create(string $type,
-                           array $config = [])
+    public function create(string $type, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'passive' => false,
             'durable' => false,
             'auto_delete' => true,
@@ -26,91 +25,89 @@ final class Exchange extends Type
             'nowait' => false,
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->exchange_declare(
             $this->name,
             $type,
-            $config['passive'],
-            $config['durable'],
-            $config['auto_delete'],
-            $config['internal'],
-            $config['nowait'],
-            $config['arguments'],
-            $config['ticket']
+            $options['passive'],
+            $options['durable'],
+            $options['auto_delete'],
+            $options['internal'],
+            $options['nowait'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
     /**
      * Bind Exchange
      * @param string $destination dest exchange
-     * @param array $config config
+     * @param array $options
      * @return mixed|null
      */
-    public function bind(string $destination,
-                         array $config = [])
+    public function bind(string $destination, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'routing_key' => '',
             'nowait' => false,
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->exchange_bind(
             $destination,
             $this->name,
-            $config['routing_key'],
-            $config['nowait'],
-            $config['arguments'],
-            $config['ticket']
+            $options['routing_key'],
+            $options['nowait'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
     /**
      * Unbind Exchange
      * @param string $destination dest exchange
-     * @param array $config operate config
+     * @param array $options
      * @return mixed
      */
-    public function unbind(string $destination,
-                           array $config = [])
+    public function unbind(string $destination, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'routing_key' => '',
             'nowait' => false,
             'arguments' => [],
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->exchange_unbind(
             $destination,
             $this->name,
-            $config['routing_key'],
-            $config['nowait'],
-            $config['arguments'],
-            $config['ticket']
+            $options['routing_key'],
+            $options['nowait'],
+            $options['arguments'],
+            $options['ticket']
         );
     }
 
     /**
      * Delete Exchange
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|null
      */
-    public function delete(array $config = [])
+    public function delete(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'if_unused' => false,
             'nowait' => false,
             'ticket' => null
-        ], $config);
+        ], $options);
 
         return $this->channel->exchange_delete(
             $this->name,
-            $config['if_unused'],
-            $config['nowait'],
-            $config['ticket']
+            $options['if_unused'],
+            $options['nowait'],
+            $options['ticket']
         );
     }
 }
