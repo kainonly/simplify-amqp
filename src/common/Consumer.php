@@ -16,49 +16,49 @@ final class Consumer extends Type
      * Create Consumer
      * @param string $queueName queue name
      * @param Closure $subscribe Subscribe
-     * @param array $config operate config
+     * @param array $options
      * @return mixed|string
      */
-    public function create(string $queueName, Closure $subscribe, array $config = [])
+    public function create(string $queueName, Closure $subscribe, array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'no_local' => false,
             'no_ack' => false,
             'exclusive' => false,
             'nowait' => false,
             'ticket' => null,
             'arguments' => []
-        ], $config);
+        ], $options);
 
         return $this->channel->basic_consume(
             $queueName,
             $this->name,
-            $config['no_local'],
-            $config['no_ack'],
-            $config['exclusive'],
-            $config['nowait'],
+            $options['no_local'],
+            $options['no_ack'],
+            $options['exclusive'],
+            $options['nowait'],
             $subscribe,
-            $config['ticket'],
-            $config['arguments']
+            $options['ticket'],
+            $options['arguments']
         );
     }
 
     /**
      * Unsubscribe
-     * @param array $config operate config
+     * @param array $options
      * @return mixed
      */
-    public function unsubscribe(array $config = [])
+    public function unsubscribe(array $options = [])
     {
-        $config = array_merge([
+        $options = array_merge([
             'nowait' => false,
             'noreturn' => false
-        ], $config);
+        ], $options);
 
         return $this->channel->basic_cancel(
             $this->name,
-            $config['nowait'],
-            $config['noreturn']
+            $options['nowait'],
+            $options['noreturn']
         );
     }
 }
