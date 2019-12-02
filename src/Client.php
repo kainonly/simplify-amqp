@@ -82,7 +82,25 @@ final class Client
     }
 
     /**
-     * Create Channel
+     * get connection
+     * @return AMQPStreamConnection
+     */
+    public function getConnection(): AMQPStreamConnection
+    {
+        return $this->connection;
+    }
+
+    /**
+     * get channel
+     * @return AMQPChannel
+     */
+    public function getChannel(): AMQPChannel
+    {
+        return $this->channel;
+    }
+
+    /**
+     * create amqp channel
      * @param Closure $closure
      * @param array $options channel options
      * @throws Exception
@@ -98,11 +116,10 @@ final class Client
         ], $options);
         $this->channel = $this->connection
             ->channel($options['channel_id']);
-        if ($options['transaction']) {
-            $this->channel->tx_select();
-            $result = $closure($this->channel);
 
-            if ($result) {
+        if (!empty($options['transaction']) && $options['transaction'] == true) {
+            $this->channel->tx_select();
+            if ($closure($this->channel)) {
                 $this->channel->tx_commit();
             } else {
                 $this->channel->tx_rollback();
@@ -116,7 +133,6 @@ final class Client
             $options['reply_text'],
             $options['method_sig']
         );
-
         $this->connection->close(
             $options['reply_code'],
             $options['reply_text'],
@@ -125,15 +141,12 @@ final class Client
     }
 
     /**
-     * Create Message
+     * create amqp message
      * @param string $text Message Body
      * @param array $options options
      * @return AMQPMessage
      */
-    public function message(
-        string $text,
-        array $options = []
-    ): AMQPMessage
+    public function message(string $text, array $options = []): AMQPMessage
     {
         return new AMQPMessage(
             $text,
@@ -142,7 +155,7 @@ final class Client
     }
 
     /**
-     * Publish Message
+     * publish message
      * @param AMQPMessage $message Message Body
      * @param string $exchange
      * @param string $routing_key

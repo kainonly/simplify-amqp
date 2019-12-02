@@ -13,7 +13,10 @@ final class Exchange extends Type
      * @param string $type exchange type
      * @param array $options exchange options
      */
-    public function setDeclare(string $type, array $options = []): void
+    public function setDeclare(
+        string $type,
+        array $options = []
+    ): void
     {
         $options = array_merge([
             'passive' => false,
@@ -43,7 +46,10 @@ final class Exchange extends Type
      * @param string $destination dest exchange
      * @param array $options
      */
-    public function bind(string $destination, array $options = []): void
+    public function bind(
+        string $destination,
+        array $options = []
+    ): void
     {
         $options = array_merge([
             'routing_key' => '',
