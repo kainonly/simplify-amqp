@@ -1,36 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace testing;
+namespace tests;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit\Framework\TestCase;
 use tidy\amqp\Client;
 
-class ExchangeTest extends TestCase
+class Exchange extends BaseTest
 {
-    /**
-     * @var Client
-     */
-    private $client;
-
     public function testCreateExchange()
     {
         try {
-            $this->client = new Client(
-                getenv('hostname'),
-                (int)getenv('port'),
-                getenv('username'),
-                getenv('password')
-            );
             $this->client->channel(function () {
-                $result = $this->client
+                $this->client
                     ->exchange('tidy')
-                    ->create('direct');
-                $this->assertNull($result, 'Create Exchange Failed');
+                    ->setDeclare('direct', [
+                        'durable' => true,
+                        'nowait' => true
+                    ]);
             });
         } catch (\Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
+            $this->expectDeprecationMessage($e->getMessage());
         }
     }
 

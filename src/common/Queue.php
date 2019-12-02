@@ -12,9 +12,8 @@ final class Queue extends Type
     /**
      * Declare Queue
      * @param array $options
-     * @return array|null
      */
-    public function create(array $options = [])
+    public function setDeclare(array $options = []): void
     {
         $options = array_merge([
             'passive' => false,
@@ -26,7 +25,7 @@ final class Queue extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->queue_declare(
+        $this->channel->queue_declare(
             $this->name,
             $options['passive'],
             $options['durable'],
@@ -42,9 +41,8 @@ final class Queue extends Type
      * Bind Exchange
      * @param string $exchangeName exchange name
      * @param array $options
-     * @return mixed|null
      */
-    public function bind(string $exchangeName, array $options = [])
+    public function bind(string $exchangeName, array $options = []): void
     {
         $options = array_merge([
             'routing_key' => '',
@@ -53,7 +51,7 @@ final class Queue extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->queue_bind(
+        $this->channel->queue_bind(
             $this->name,
             $exchangeName,
             $options['routing_key'],
@@ -67,9 +65,8 @@ final class Queue extends Type
      * Unbind Exchange
      * @param string $exchangeName exchange name
      * @param array $options
-     * @return mixed
      */
-    public function unbind(string $exchangeName, array $options = [])
+    public function unbind(string $exchangeName, array $options = []): void
     {
         $options = array_merge([
             'routing_key' => '',
@@ -77,7 +74,7 @@ final class Queue extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->queue_unbind(
+        $this->channel->queue_unbind(
             $this->name,
             $exchangeName,
             $options['routing_key'],
@@ -89,16 +86,15 @@ final class Queue extends Type
     /**
      * Purge Queue
      * @param array $options
-     * @return mixed|null
      */
-    public function purge(array $options = [])
+    public function purge(array $options = []): void
     {
         $options = array_merge([
             'nowait' => false,
             'ticket' => null
         ], $options);
 
-        return $this->channel->queue_purge(
+        $this->channel->queue_purge(
             $this->name,
             $options['nowait'],
             $options['ticket']
@@ -108,9 +104,8 @@ final class Queue extends Type
     /**
      * Delete Queue
      * @param array $options
-     * @return mixed|null
      */
-    public function delete(array $options = [])
+    public function delete(array $options = []): void
     {
         $options = array_merge([
             'if_unused' => false,
@@ -119,7 +114,7 @@ final class Queue extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->queue_delete(
+        $this->channel->queue_delete(
             $this->name,
             $options['if_unused'],
             $options['if_empty'],
@@ -131,9 +126,8 @@ final class Queue extends Type
     /**
      * Get Queue
      * @param array $options
-     * @return mixed
      */
-    public function get(array $options = [])
+    public function get(array $options = []): void
     {
         $options = array_merge([
             'no_ack' => false,

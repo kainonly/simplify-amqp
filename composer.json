@@ -2,9 +2,9 @@
   "name": "kain/tidy-amqp",
   "description": "Tidy RabbitMQ AMQP Library",
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1",
     "ext-json": "*",
-    "php-amqplib/php-amqplib": "^2.8"
+    "php-amqplib/php-amqplib": "^2.9"
   },
   "require-dev": {
     "phpunit/phpunit": "8.4"
@@ -14,7 +14,7 @@
       "tidy\\amqp\\": "src/"
     },
     "classmap": [
-      "testing"
+      "tests"
     ]
   },
   "authors": [

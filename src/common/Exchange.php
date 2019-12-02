@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 namespace tidy\amqp\common;
-
 /**
  * Class Exchange
  * @package tidy\amqp\common
@@ -10,12 +9,11 @@ namespace tidy\amqp\common;
 final class Exchange extends Type
 {
     /**
-     * Declare Exchange
+     * declare exchange
      * @param string $type exchange type
-     * @param array $options
-     * @return mixed|null
+     * @param array $options exchange options
      */
-    public function create(string $type, array $options = [])
+    public function setDeclare(string $type, array $options = []): void
     {
         $options = array_merge([
             'passive' => false,
@@ -27,7 +25,7 @@ final class Exchange extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->exchange_declare(
+        $this->channel->exchange_declare(
             $this->name,
             $type,
             $options['passive'],
@@ -41,12 +39,11 @@ final class Exchange extends Type
     }
 
     /**
-     * Bind Exchange
+     * bind exchange
      * @param string $destination dest exchange
      * @param array $options
-     * @return mixed|null
      */
-    public function bind(string $destination, array $options = [])
+    public function bind(string $destination, array $options = []): void
     {
         $options = array_merge([
             'routing_key' => '',
@@ -55,7 +52,7 @@ final class Exchange extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->exchange_bind(
+        $this->channel->exchange_bind(
             $destination,
             $this->name,
             $options['routing_key'],
@@ -66,12 +63,11 @@ final class Exchange extends Type
     }
 
     /**
-     * Unbind Exchange
+     * unbind exchange
      * @param string $destination dest exchange
      * @param array $options
-     * @return mixed
      */
-    public function unbind(string $destination, array $options = [])
+    public function unbind(string $destination, array $options = []): void
     {
         $options = array_merge([
             'routing_key' => '',
@@ -80,7 +76,7 @@ final class Exchange extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->exchange_unbind(
+        $this->channel->exchange_unbind(
             $destination,
             $this->name,
             $options['routing_key'],
@@ -91,11 +87,10 @@ final class Exchange extends Type
     }
 
     /**
-     * Delete Exchange
+     * delete Exchange
      * @param array $options
-     * @return mixed|null
      */
-    public function delete(array $options = [])
+    public function delete(array $options = []): void
     {
         $options = array_merge([
             'if_unused' => false,
@@ -103,7 +98,7 @@ final class Exchange extends Type
             'ticket' => null
         ], $options);
 
-        return $this->channel->exchange_delete(
+        $this->channel->exchange_delete(
             $this->name,
             $options['if_unused'],
             $options['nowait'],
