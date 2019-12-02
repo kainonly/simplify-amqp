@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tidy\amqp\common;
+namespace simplify\amqp\common;
 
 use Closure;
 

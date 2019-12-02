@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace tidy\amqp;
+namespace simplify\amqp;
 
 use Closure;
 use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use tidy\amqp\common\Consumer;
-use tidy\amqp\common\Exchange;
-use tidy\amqp\common\Queue;
+use simplify\amqp\common\Consumer;
+use simplify\amqp\common\Exchange;
+use simplify\amqp\common\Queue;
 
 /**
  * Class Client

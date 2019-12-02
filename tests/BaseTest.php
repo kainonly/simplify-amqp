@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace tests;
 
 use PHPUnit\Framework\TestCase;
-use tidy\amqp\Client;
+use simplify\amqp\Client;
 
 class BaseTest extends TestCase
 {

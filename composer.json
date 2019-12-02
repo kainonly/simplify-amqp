@@ -1,6 +1,6 @@
 {
-  "name": "kain/tidy-amqp",
-  "description": "Tidy RabbitMQ AMQP Library",
+  "name": "kain/simplify-amqp",
+  "description": "Simplify amqp operation library php-amqplib / php-amqplib",
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "tidy\\amqp\\": "src/"
+      "simplify\\amqp\\": "src/"
     },
     "classmap": [
       "tests"
