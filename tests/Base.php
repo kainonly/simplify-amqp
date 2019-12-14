@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use simplify\amqp\Client;
 
-abstract class BaseTest extends TestCase
+abstract class Base extends TestCase
 {
     /**
      * @var string
@@ -30,7 +31,7 @@ abstract class BaseTest extends TestCase
     protected $client;
 
     /**
-     * before
+     * set Up
      */
     protected function setUp(): void
     {
@@ -38,7 +39,6 @@ abstract class BaseTest extends TestCase
         $this->port = (int)getenv('port');
         $this->username = getenv('username');
         $this->password = getenv('password');
-
         $this->client = new Client(
             $this->hostname,
             $this->port,

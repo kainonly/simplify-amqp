@@ -166,7 +166,7 @@ final class Client
         string $exchange,
         string $routing_key,
         array $options = []
-    )
+    ): void
     {
         $options = array_merge([
             'mandatory' => false,
