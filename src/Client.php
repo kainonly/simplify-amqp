@@ -105,7 +105,7 @@ final class Client
      * @param array $options channel options
      * @throws Exception
      */
-    public function channel(Closure $closure, array $options = [])
+    public function channel(Closure $closure, array $options = []): void
     {
         $options = array_merge([
             'transaction' => false,
@@ -191,7 +191,7 @@ final class Client
     public function ack(
         string $delivery_tag,
         bool $multiple = false
-    )
+    ): void
     {
         $this->channel->basic_ack(
             $delivery_tag,
@@ -207,7 +207,7 @@ final class Client
     public function reject(
         string $delivery_tag,
         bool $requeue = false
-    )
+    ): void
     {
         $this->channel->basic_reject(
             $delivery_tag,
@@ -225,7 +225,7 @@ final class Client
         string $delivery_tag,
         bool $multiple = false,
         bool $requeue = false
-    )
+    ): void
     {
         $this->channel->basic_nack(
             $delivery_tag,

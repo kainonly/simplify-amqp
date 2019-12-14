@@ -126,8 +126,9 @@ final class Queue extends Type
     /**
      * Get Queue
      * @param array $options
+     * @return mixed
      */
-    public function get(array $options = []): void
+    public function get(array $options = [])
     {
         $options = array_merge([
             'no_ack' => false,
