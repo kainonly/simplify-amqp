@@ -14,7 +14,7 @@ use simplify\amqp\common\Queue;
 
 /**
  * Class Client
- * @package tidy\amqp
+ * @package simplify\amqp
  */
 final class Client
 {

@@ -7,7 +7,7 @@ use Closure;
 
 /**
  * Class Consumer
- * @package tidy\amqp\common
+ * @package simplify\amqp\common
  * @inheritDoc
  */
 final class Consumer extends Type

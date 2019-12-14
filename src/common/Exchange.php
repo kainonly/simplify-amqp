@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace simplify\amqp\common;
 /**
  * Class Exchange
- * @package tidy\amqp\common
+ * @package simplify\amqp\common
  */
 final class Exchange extends Type
 {

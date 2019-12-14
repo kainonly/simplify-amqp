@@ -7,7 +7,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
  * Class Type
- * @package tidy\amqp\common
+ * @package simplify\amqp\common
  */
 abstract class Type
 {

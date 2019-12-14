@@ -5,7 +5,7 @@ namespace simplify\amqp\common;
 
 /**
  * Class Queue
- * @package tidy\amqp\common
+ * @package simplify\amqp\common
  */
 final class Queue extends Type
 {
