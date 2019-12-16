@@ -7,6 +7,7 @@ use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use simplify\amqp\AMQPManager;
 
 class ClientTest extends Base
 {
@@ -35,13 +36,15 @@ class ClientTest extends Base
 
     public function testCreateMessage()
     {
-        $this->assertInstanceOf(
-            AMQPMessage::class,
-            $this->client->message(
-                json_encode([
+        try {
+            $this->assertInstanceOf(
+                AMQPMessage::class,
+                AMQPManager::message(json_encode([
                     'name' => 'kain'
-                ])
-            )
-        );
+                ]))
+            );
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
     }
 }

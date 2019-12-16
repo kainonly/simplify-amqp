@@ -5,7 +5,7 @@ namespace tests;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use simplify\amqp\Client;
+use simplify\amqp\AMQPClient;
 
 abstract class Base extends TestCase
 {
@@ -26,7 +26,7 @@ abstract class Base extends TestCase
      */
     protected $password;
     /**
-     * @var Client
+     * @var AMQPClient
      */
     protected $client;
 
@@ -39,7 +39,7 @@ abstract class Base extends TestCase
         $this->port = (int)getenv('port');
         $this->username = getenv('username');
         $this->password = getenv('password');
-        $this->client = new Client(
+        $this->client = new AMQPClient(
             $this->hostname,
             $this->port,
             $this->username,
