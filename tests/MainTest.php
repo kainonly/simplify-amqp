@@ -9,7 +9,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use simplify\amqp\AMQPManager;
 
-class ClientTest extends Base
+class MainTest extends Base
 {
     public function testGetConnection()
     {
@@ -22,11 +22,11 @@ class ClientTest extends Base
     public function testCreateChannel()
     {
         try {
-            $this->client->channel(function (AMQPChannel $channel) {
-                $this->assertNotEmpty($channel);
+            $this->client->channel(function (AMQPManager $manager) {
+                $this->assertNotEmpty($manager);
                 $this->assertInstanceOf(
                     AMQPChannel::class,
-                    $channel
+                    $manager->getChannel()
                 );
             });
         } catch (Exception $e) {
