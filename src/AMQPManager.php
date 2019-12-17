@@ -99,11 +99,11 @@ final class AMQPManager
 
     /**
      * Reject Message
-     * @param string $delivery_tag Tag
+     * @param int $delivery_tag Tag
      * @param bool $requeue Reset Message
      */
     public function reject(
-        string $delivery_tag,
+        int $delivery_tag,
         bool $requeue = false
     ): void
     {
@@ -115,12 +115,12 @@ final class AMQPManager
 
     /**
      * Nack Message
-     * @param string $delivery_tag Tag
+     * @param int $delivery_tag Tag
      * @param bool $multiple Mulitple
      * @param bool $requeue Reset Message
      */
     public function nack(
-        string $delivery_tag,
+        int $delivery_tag,
         bool $multiple = false,
         bool $requeue = false
     ): void
