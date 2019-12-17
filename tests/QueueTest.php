@@ -12,11 +12,11 @@ class QueueTest extends Base
     private $exchangeName;
     private $queueName;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    protected function setUp(): void
     {
-        parent::__construct($name, $data, $dataName);
-        $this->exchangeName = 'simpliy-' . sha1((string)time());
-        $this->queueName = 'simpliy-' . md5((string)time());
+        parent::setUp();
+        $this->exchangeName = 'exchange-' . md5((string)time());
+        $this->queueName = 'queue-' . md5((string)time());
     }
 
     public function testCreateQueue()
