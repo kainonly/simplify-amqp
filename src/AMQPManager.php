@@ -15,7 +15,7 @@ final class AMQPManager
      * AMQP Channel
      * @var AMQPChannel
      */
-    private $channel;
+    private AMQPChannel $channel;
 
     /**
      * create amqp message
@@ -23,7 +23,10 @@ final class AMQPManager
      * @param array $options options
      * @return AMQPMessage
      */
-    public static function message(string $text, array $options = []): AMQPMessage
+    public static function message(
+        string $text,
+        array $options = []
+    ): AMQPMessage
     {
         return new AMQPMessage(
             $text,

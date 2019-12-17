@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use simplify\amqp\AMQPClient;
 

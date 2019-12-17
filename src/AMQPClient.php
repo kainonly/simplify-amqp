@@ -17,7 +17,7 @@ final class AMQPClient
      * AMQP Connection
      * @var AMQPStreamConnection
      */
-    private $connection;
+    private AMQPStreamConnection $connection;
 
     /**
      * Client constructor.
