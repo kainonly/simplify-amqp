@@ -13,13 +13,13 @@ use Closure;
 final class Consumer extends Type
 {
     /**
-     * Create Consumer
+     * Subscribe
      * @param string $queueName queue name
      * @param Closure $subscribe Subscribe
      * @param array $options
      * @return mixed|string
      */
-    public function create(string $queueName, Closure $subscribe, array $options = [])
+    public function subscribe(string $queueName, Closure $subscribe, array $options = [])
     {
         $options = array_merge([
             'no_local' => false,
