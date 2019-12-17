@@ -80,11 +80,11 @@ final class AMQPManager
 
     /**
      * Ack Message
-     * @param string $delivery_tag Tag
+     * @param int $delivery_tag Tag
      * @param bool $multiple Multiple
      */
     public function ack(
-        string $delivery_tag,
+        int $delivery_tag,
         bool $multiple = false
     ): void
     {

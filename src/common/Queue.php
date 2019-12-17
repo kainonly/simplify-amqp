@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace simplify\amqp\common;
 
+use PhpAmqpLib\Message\AMQPMessage;
+
 /**
  * Class Queue
  * @package simplify\amqp\common
@@ -124,9 +126,9 @@ final class Queue extends Type
     }
 
     /**
-     * Get Queue
+     * Get Queue Message
      * @param array $options
-     * @return mixed
+     * @return AMQPMessage|null
      */
     public function get(array $options = [])
     {
