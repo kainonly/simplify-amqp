@@ -50,110 +50,35 @@ class ExchangeTest extends Base
         }
     }
 
-//    public function testCreateQueue()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->queue($this->queueName)
-//                    ->setDeclare([
-//                        'durable' => true
-//                    ]);
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
+    public function testBindExchange()
+    {
+        try {
+            $this->client->channel(function (AMQPManager $manager) {
+                $manager->exchange($this->exchangeName)
+                    ->bind($this->exchangeOtherName, [
+                        'routing_key' => 'simpliy'
+                    ]);
+                $this->assertNull(null);
+            });
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
 
-//    public function testBindExchange()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->exchange($this->exchangeName)
-//                    ->bind($this->exchangeOtherName, [
-//                        'routing_key' => 'simpliy'
-//                    ]);
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
-//
-//    public function testBindQueue()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->queue($this->queueName)->bind($this->exchangeName);
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
-//
-//    public function testPublishMessage()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->publish(
-//                    AMQPManager::message(
-//                        json_encode([
-//                            "name" => "kain"
-//                        ])
-//                    ),
-//                    $this->exchangeOtherName,
-//                    'simpliy'
-//                );
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
-//
-//    public function testGetQueueBindMessage()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $message = $manager->queue($this->queueName)
-//                    ->get();
-//                $this->assertNotEmpty($message);
-//                $data = json_decode($message->getBody());
-//                $this->assertEquals($data->name, 'kain');
-//                $manager->ack($message->getDeliveryTag());
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
-//
-//    public function testUnbindQueue()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->queue($this->queueName)->unbind($this->exchangeName);
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
-//
-//    public function testUnbindExchange()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->exchange($this->exchangeName)
-//                    ->unbind($this->exchangeOtherName, [
-//                        'routing_key' => 'simpliy'
-//                    ]);
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
+    public function testUnbindExchange()
+    {
+        try {
+            $this->client->channel(function (AMQPManager $manager) {
+                $manager->exchange($this->exchangeName)
+                    ->unbind($this->exchangeOtherName, [
+                        'routing_key' => 'simpliy'
+                    ]);
+                $this->assertNull(null);
+            });
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
 
     public function testDeleteExchange()
     {
@@ -180,17 +105,4 @@ class ExchangeTest extends Base
             $this->expectErrorMessage($e->getMessage());
         }
     }
-
-//    public function testDeleteQueue()
-//    {
-//        try {
-//            $this->client->channel(function (AMQPManager $manager) {
-//                $manager->queue($this->queueName)
-//                    ->delete();
-//                $this->assertNull(null);
-//            });
-//        } catch (Exception $e) {
-//            $this->expectErrorMessage($e->getMessage());
-//        }
-//    }
 }

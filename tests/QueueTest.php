@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace tests;
 
 use Exception;
-use PhpAmqpLib\Channel\AMQPChannel;
 use simplify\amqp\AMQPManager;
 
 class QueueTest extends Base
