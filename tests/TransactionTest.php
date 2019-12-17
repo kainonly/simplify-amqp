@@ -31,7 +31,7 @@ class TransactionTest extends Base
         }
     }
 
-    public function testPublishMessage()
+    public function testPublishMessageSuccess()
     {
         try {
             $this->client->channeltx(function (AMQPManager $manager) {
@@ -47,6 +47,56 @@ class TransactionTest extends Base
                 return true;
             });
             $this->assertNull(null);
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetQueueMessage()
+    {
+        try {
+            $this->client->channel(function (AMQPManager $manager) {
+                $message = $manager->queue($this->queueName)
+                    ->get();
+                $this->assertNotEmpty($message);
+                $data = json_decode($message->getBody());
+                $this->assertEquals($data->name, 'kain');
+                $manager->ack($message->getDeliveryTag());
+            });
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testPublishMessageFailed()
+    {
+        try {
+            $this->client->channeltx(function (AMQPManager $manager) {
+                $manager->publish(
+                    AMQPManager::message(
+                        json_encode([
+                            "name" => "kain"
+                        ])
+                    ),
+                    '',
+                    $this->queueName
+                );
+                return false;
+            });
+            $this->assertNull(null);
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetQueueMessageEmpty()
+    {
+        try {
+            $this->client->channel(function (AMQPManager $manager) {
+                $message = $manager->queue($this->queueName)
+                    ->get();
+                $this->assertEmpty($message);
+            });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
