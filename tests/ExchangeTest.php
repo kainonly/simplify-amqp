@@ -15,9 +15,9 @@ class ExchangeTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
-        $this->exchangeName = 'exchange1-' . md5((string)time());
-        $this->exchangeOtherName = 'exchange2-' . md5((string)time());
-        $this->queueName = 'queue-' . md5((string)time());
+        $this->exchangeName = 'exchange1-' . md5('exchange');
+        $this->exchangeOtherName = 'exchange2-' . md5('exchange');
+        $this->queueName = 'queue-' . md5('exchange');
     }
 
     public function testCreateExchange()

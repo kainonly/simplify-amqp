@@ -13,7 +13,7 @@ class FeedbackTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
-        $this->queueName = 'queue-feedback';
+        $this->queueName = 'queue-' . md5('feedback');
     }
 
     public function testCreateQueue()

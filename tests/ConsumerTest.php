@@ -15,8 +15,8 @@ class ConsumerTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
-        $this->queueName = 'queue-' . md5((string)time());
-        $this->consumerName = 'consumer-' . md5((string)time());
+        $this->queueName = 'queue-' . md5('consumer');
+        $this->consumerName = 'consumer-' . md5('consumer');
     }
 
     public function testCreateQueue()

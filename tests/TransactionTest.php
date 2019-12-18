@@ -13,7 +13,7 @@ class TransactionTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
-        $this->queueName = 'queue-' . md5((string)time());
+        $this->queueName = 'queue-' . md5('transaction');
     }
 
     public function testCreateQueue()

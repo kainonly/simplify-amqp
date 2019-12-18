@@ -14,8 +14,8 @@ class QueueTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
-        $this->exchangeName = 'exchange-' . md5((string)time());
-        $this->queueName = 'queue-' . md5((string)time());
+        $this->exchangeName = 'exchange-' . md5('queue');
+        $this->queueName = 'queue-' . md5('queue');
     }
 
     public function testCreateQueue()
