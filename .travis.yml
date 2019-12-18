@@ -4,4 +4,4 @@ php:
 before_script:
   - composer update -o
 script:
-  - vendor/bin/phpunit --configuration $TRAVIS_BUILD_DIR/phpunit.xml $TRAVIS_BUILD_DIR/tests
+  - vendor/bin/phpunit --configuration phpunit.xml tests
