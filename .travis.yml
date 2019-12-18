@@ -6,4 +6,4 @@ before_script:
 script:
   - vendor/bin/phpunit --configuration phpunit.xml tests
 after_success:
-  - vendor/bin/php-coveralls
+  - travis_retry php vendor/bin/php-coveralls -v
