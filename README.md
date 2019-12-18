@@ -14,3 +14,22 @@ Simplify amqp operation library php-amqplib / php-amqplib
 ```shell
 composer require kain/simplify-amqp
 ```
+
+#### Usage
+
+Create an AMQP client
+
+```php
+$client->channel(function (AMQPManager $manager) {});
+```
+
+Declare a exchange
+
+```php
+$client->channel(function (AMQPManager $manager) {
+    $manager->exchange('anyone')
+        ->setDeclare('direct', [
+            'durable' => true
+        ]);
+});
+```
