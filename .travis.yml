@@ -4,4 +4,4 @@ php:
 before_script:
   - composer update -o
 script:
-  - phpunit --coverage-html build/coverage-report --configuration phpunit.xml tests
+  - phpunit --coverage-html build/coverage-report --configuration ${HOME}/phpunit.xml ${HOME}/tests
