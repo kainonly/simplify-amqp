@@ -2,7 +2,7 @@
   "name": "kain/simplify-amqp",
   "description": "Simplify amqp operation library php-amqplib / php-amqplib",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "ext-json": "*",
     "php-amqplib/php-amqplib": "^2.9"
   },

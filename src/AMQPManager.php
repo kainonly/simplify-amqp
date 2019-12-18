@@ -15,7 +15,7 @@ final class AMQPManager
      * AMQP Channel
      * @var AMQPChannel
      */
-    private AMQPChannel $channel;
+    private $channel;
 
     /**
      * create amqp message

@@ -15,13 +15,13 @@ abstract class Type
      * Operate Channel
      * @var AMQPChannel
      */
-    protected AMQPChannel $channel;
+    protected $channel;
 
     /**
      * Operate Name
      * @var string
      */
-    protected string $name;
+    protected $name;
 
     /**
      * Type constructor.
