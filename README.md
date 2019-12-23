@@ -20,6 +20,13 @@ composer require kain/simplify-amqp
 Create an AMQP client
 
 ```php
+$client = new AMQPClient(
+  $hostname,
+  $port,
+  $username,
+  $password
+);
+
 $client->channel(function (AMQPManager $manager) {});
 ```
 
