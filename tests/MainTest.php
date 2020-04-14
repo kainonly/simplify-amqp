@@ -6,7 +6,6 @@ namespace SimplifyTests;
 use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
 class MainTest extends Base
@@ -29,20 +28,6 @@ class MainTest extends Base
                     $manager->getChannel()
                 );
             });
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testCreateMessage()
-    {
-        try {
-            $this->assertInstanceOf(
-                AMQPMessage::class,
-                AMQPManager::message(json_encode([
-                    'name' => 'kain'
-                ]))
-            );
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

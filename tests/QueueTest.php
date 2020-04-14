@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SimplifyTests;
 
 use Exception;
+use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
 class QueueTest extends Base
@@ -23,7 +24,7 @@ class QueueTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)
-                    ->setDeclare([
+                    ->create([
                         'durable' => true
                     ]);
                 $this->assertNull(null);
@@ -38,11 +39,9 @@ class QueueTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message(
-                        json_encode([
-                            "name" => "kain"
-                        ])
-                    ),
+                    new AMQPMessage(json_encode([
+                        "name" => "kain"
+                    ])),
                     '',
                     $this->queueName
                 );
@@ -57,8 +56,7 @@ class QueueTest extends Base
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $message = $manager->queue($this->queueName)
-                    ->get();
+                $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
                 $this->assertEquals($data->name, 'kain');
@@ -74,7 +72,7 @@ class QueueTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeName)
-                    ->setDeclare('direct', [
+                    ->create('direct', [
                         'durable' => true
                     ]);
                 $this->assertNull(null);
@@ -103,11 +101,9 @@ class QueueTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message(
-                        json_encode([
-                            "type" => "bind"
-                        ])
-                    ),
+                    new AMQPMessage(json_encode([
+                        "type" => "bind"
+                    ])),
                     $this->exchangeName,
                     'simpliy'
                 );
@@ -152,8 +148,7 @@ class QueueTest extends Base
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->queue($this->queueName)
-                    ->purge();
+                $manager->queue($this->queueName)->purge();
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -165,8 +160,7 @@ class QueueTest extends Base
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->exchange($this->exchangeName)
-                    ->delete();
+                $manager->exchange($this->exchangeName)->delete();
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -178,8 +172,7 @@ class QueueTest extends Base
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->queue($this->queueName)
-                    ->delete();
+                $manager->queue($this->queueName)->delete();
                 $this->assertNull(null);
             });
         } catch (Exception $e) {

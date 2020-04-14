@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SimplifyTests;
 
 use Exception;
+use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
 class FeedbackTest extends Base
@@ -21,7 +22,7 @@ class FeedbackTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)
-                    ->setDeclare([
+                    ->create([
                         'durable' => true,
                         'auto_delete' => false
                     ]);
@@ -37,7 +38,7 @@ class FeedbackTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message('Test'),
+                    new AMQPMessage('Test'),
                     '',
                     $this->queueName
                 );
@@ -57,7 +58,7 @@ class FeedbackTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message('Test'),
+                    new AMQPMessage('Test'),
                     '',
                     $this->queueName
                 );

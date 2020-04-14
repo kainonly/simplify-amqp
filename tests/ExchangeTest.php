@@ -25,7 +25,7 @@ class ExchangeTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeName)
-                    ->setDeclare('direct', [
+                    ->create('direct', [
                         'durable' => true
                     ]);
                 $this->assertNull(null);
@@ -40,7 +40,7 @@ class ExchangeTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeOtherName)
-                    ->setDeclare('direct', [
+                    ->create('direct', [
                         'durable' => true
                     ]);
                 $this->assertNull(null);

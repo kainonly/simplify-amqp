@@ -15,7 +15,7 @@ class QueueFactory extends BaseFactory
      * Declare Queue
      * @param array $options
      */
-    public function setDeclare(array $options = []): void
+    public function create(array $options = []): void
     {
         $this->channel->queue_declare(
             $this->name,

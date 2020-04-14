@@ -18,20 +18,6 @@ class AMQPManager
     private AMQPChannel $channel;
 
     /**
-     * create amqp message
-     * @param string $text Message Body
-     * @param array $options options
-     * @return AMQPMessage
-     */
-    public static function message(string $text, array $options = []): AMQPMessage
-    {
-        return new AMQPMessage(
-            $text,
-            $options
-        );
-    }
-
-    /**
      * Manager constructor.
      * @param AMQPChannel $channel
      */
@@ -79,10 +65,7 @@ class AMQPManager
      */
     public function ack(int $delivery_tag, bool $multiple = false): void
     {
-        $this->channel->basic_ack(
-            $delivery_tag,
-            $multiple
-        );
+        $this->channel->basic_ack($delivery_tag, $multiple);
     }
 
     /**
@@ -92,10 +75,7 @@ class AMQPManager
      */
     public function reject(int $delivery_tag, bool $requeue = false): void
     {
-        $this->channel->basic_reject(
-            $delivery_tag,
-            $requeue
-        );
+        $this->channel->basic_reject($delivery_tag, $requeue);
     }
 
     /**

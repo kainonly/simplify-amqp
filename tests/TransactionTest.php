@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SimplifyTests;
 
 use Exception;
+use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
 class TransactionTest extends Base
@@ -21,7 +22,7 @@ class TransactionTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)
-                    ->setDeclare([
+                    ->create([
                         'durable' => true
                     ]);
                 $this->assertNull(null);
@@ -36,7 +37,7 @@ class TransactionTest extends Base
         try {
             $this->client->channeltx(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message(
+                    new AMQPMessage(
                         json_encode([
                             "name" => "kain"
                         ])
@@ -56,8 +57,7 @@ class TransactionTest extends Base
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $message = $manager->queue($this->queueName)
-                    ->get();
+                $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
                 $this->assertEquals($data->name, 'kain');
@@ -73,7 +73,7 @@ class TransactionTest extends Base
         try {
             $this->client->channeltx(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message(
+                    new AMQPMessage(
                         json_encode([
                             "name" => "kain"
                         ])

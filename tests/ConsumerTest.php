@@ -24,7 +24,7 @@ class ConsumerTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)
-                    ->setDeclare([
+                    ->create([
                         'durable' => true
                     ]);
                 $this->assertNull(null);
@@ -39,7 +39,7 @@ class ConsumerTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    AMQPManager::message(
+                    new AMQPMessage(
                         json_encode([
                             "name" => "kain"
                         ])

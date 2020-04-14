@@ -13,7 +13,7 @@ class ExchangeFactory extends BaseFactory
      * @param string $type exchange type
      * @param array $options exchange options
      */
-    public function setDeclare(string $type, array $options = []): void
+    public function create(string $type, array $options = []): void
     {
         $this->channel->exchange_declare(
             $this->name,
