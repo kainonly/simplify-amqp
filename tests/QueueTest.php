@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace SimplifyTests;
 
 use Exception;
-use simplify\amqp\AMQPManager;
+use Simplify\AMQP\AMQPManager;
 
 class QueueTest extends Base
 {

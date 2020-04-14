@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace SimplifyTests;
 
 use PHPUnit\Framework\TestCase;
-use simplify\amqp\AMQPClient;
+use Simplify\AMQP\AMQPClient;
 
 abstract class Base extends TestCase
 {
@@ -40,7 +40,7 @@ abstract class Base extends TestCase
         $this->password = getenv('password');
         $this->client = new AMQPClient(
             $this->hostname,
-            $this->port,
+            (int)$this->port,
             $this->username,
             $this->password
         );

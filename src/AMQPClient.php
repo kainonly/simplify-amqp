@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace simplify\amqp;
+namespace Simplify\AMQP;
 
 use Closure;
 use Exception;
@@ -9,15 +9,15 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * Class Client
- * @package simplify\amqp
+ * @package Simplify\AMQP
  */
-final class AMQPClient
+class AMQPClient
 {
     /**
      * AMQP Connection
      * @var AMQPStreamConnection
      */
-    private $connection;
+    private AMQPStreamConnection $connection;
 
     /**
      * Client constructor.
@@ -37,36 +37,23 @@ final class AMQPClient
         array $options = []
     )
     {
-        $options = array_merge([
-            'insist' => false,
-            'login_method' => 'AMQPLAIN',
-            'login_response' => null,
-            'locale' => 'en_US',
-            'connection_timeout' => 3.0,
-            'read_write_timeout' => 3.0,
-            'context' => null,
-            'keepalive' => false,
-            'heartbeat' => 0,
-            'channel_rpc_timeout' => 0.0,
-            'ssl_protocol' => null
-        ], $options);
         $this->connection = new AMQPStreamConnection(
             $hostname,
             $port,
             $username,
             $password,
             $virualhost,
-            $options['insist'],
-            $options['login_method'],
-            $options['login_response'],
-            $options['locale'],
-            $options['connection_timeout'],
-            $options['read_write_timeout'],
-            $options['context'],
-            $options['keepalive'],
-            $options['heartbeat'],
-            $options['channel_rpc_timeout'],
-            $options['ssl_protocol']
+            $options['insist'] ?? false,
+            $options['login_method'] ?? 'AMQPLAIN',
+            $options['login_response'] ?? null,
+            $options['locale'] ?? 'en_US',
+            $options['connection_timeout'] ?? 3.0,
+            $options['read_write_timeout'] ?? 3.0,
+            $options['context'] ?? null,
+            $options['keepalive'] ?? false,
+            $options['heartbeat'] ?? 0,
+            $options['channel_rpc_timeout'] ?? 0.0,
+            $options['ssl_protocol'] ?? null
         );
     }
 
@@ -80,66 +67,40 @@ final class AMQPClient
     }
 
     /**
-     * create amqp channel
      * @param Closure $closure
-     * @param array $options channel options
+     * @param string|null $id
+     * @param bool $wait
      * @throws Exception
      */
-    public function channel(Closure $closure, array $options = []): void
+    public function channel(Closure $closure, string $id = null, bool $wait = false): void
     {
-        $options = array_merge([
-            'channel_id' => null,
-            'reply_code' => 0,
-            'reply_text' => '',
-            'method_sig' => [0, 0]
-        ], $options);
-        $channel = $this->connection
-            ->channel($options['channel_id']);
+        $channel = $this->connection->channel($id);
         $closure(new AMQPManager($channel));
-        $channel->close(
-            $options['reply_code'],
-            $options['reply_text'],
-            $options['method_sig']
-        );
-        $this->connection->close(
-            $options['reply_code'],
-            $options['reply_text'],
-            $options['method_sig']
-        );
+        $channel->close();
+        if (!$wait) {
+            $this->connection->close();
+        }
     }
 
     /**
      * create amqp channel with transaction
      * @param Closure $closure
-     * @param array $options
+     * @param string|null $id
+     * @param bool $wait
      * @throws Exception
      */
-    public function channeltx(Closure $closure, array $options = []): void
+    public function channeltx(Closure $closure, string $id = null, bool $wait = false): void
     {
-        $options = array_merge([
-            'channel_id' => null,
-            'reply_code' => 0,
-            'reply_text' => '',
-            'method_sig' => [0, 0]
-        ], $options);
-
-        $channel = $this->connection
-            ->channel($options['channel_id']);
+        $channel = $this->connection->channel($id);
         $channel->tx_select();
         if ($closure(new AMQPManager($channel))) {
             $channel->tx_commit();
         } else {
             $channel->tx_rollback();
         }
-        $channel->close(
-            $options['reply_code'],
-            $options['reply_text'],
-            $options['method_sig']
-        );
-        $this->connection->close(
-            $options['reply_code'],
-            $options['reply_text'],
-            $options['method_sig']
-        );
+        $channel->close();
+        if (!$wait) {
+            $this->connection->close();
+        }
     }
 }

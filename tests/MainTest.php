@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace SimplifyTests;
 
 use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use simplify\amqp\AMQPManager;
+use Simplify\AMQP\AMQPManager;
 
 class MainTest extends Base
 {

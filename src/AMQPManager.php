@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace simplify\amqp;
+namespace Simplify\AMQP;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
-use simplify\amqp\common\Consumer;
-use simplify\amqp\common\Exchange;
-use simplify\amqp\common\Queue;
+use Simplify\AMQP\factory\ConsumerFactory;
+use Simplify\AMQP\factory\ExchangeFactory;
+use Simplify\AMQP\factory\QueueFactory;
 
-final class AMQPManager
+class AMQPManager
 {
     /**
      * AMQP Channel
      * @var AMQPChannel
      */
-    private $channel;
+    private AMQPChannel $channel;
 
     /**
      * create amqp message
@@ -23,10 +23,7 @@ final class AMQPManager
      * @param array $options options
      * @return AMQPMessage
      */
-    public static function message(
-        string $text,
-        array $options = []
-    ): AMQPMessage
+    public static function message(string $text, array $options = []): AMQPMessage
     {
         return new AMQPMessage(
             $text,
@@ -47,7 +44,7 @@ final class AMQPManager
      * get channel
      * @return AMQPChannel
      */
-    public function getChannel()
+    public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }
@@ -66,18 +63,12 @@ final class AMQPManager
         array $options = []
     ): void
     {
-        $options = array_merge([
-            'mandatory' => false,
-            'immediate' => false,
-            'ticket' => null
-        ], $options);
         $this->channel->basic_publish(
             $message,
             $exchange,
             $routing_key,
-            $options['mandatory'],
-            $options['immediate'],
-            $options['ticket']
+            $options['mandatory'] ?? false,
+            $options['immediate'] ?? false,
         );
     }
 
@@ -86,10 +77,7 @@ final class AMQPManager
      * @param int $delivery_tag Tag
      * @param bool $multiple Multiple
      */
-    public function ack(
-        int $delivery_tag,
-        bool $multiple = false
-    ): void
+    public function ack(int $delivery_tag, bool $multiple = false): void
     {
         $this->channel->basic_ack(
             $delivery_tag,
@@ -102,10 +90,7 @@ final class AMQPManager
      * @param int $delivery_tag Tag
      * @param bool $requeue Reset Message
      */
-    public function reject(
-        int $delivery_tag,
-        bool $requeue = false
-    ): void
+    public function reject(int $delivery_tag, bool $requeue = false): void
     {
         $this->channel->basic_reject(
             $delivery_tag,
@@ -119,11 +104,7 @@ final class AMQPManager
      * @param bool $multiple Mulitple
      * @param bool $requeue Reset Message
      */
-    public function nack(
-        int $delivery_tag,
-        bool $multiple = false,
-        bool $requeue = false
-    ): void
+    public function nack(int $delivery_tag, bool $multiple = false, bool $requeue = false): void
     {
         $this->channel->basic_nack(
             $delivery_tag,
@@ -145,30 +126,30 @@ final class AMQPManager
     /**
      * Create Exchange Operate
      * @param string $name exchange name
-     * @return Exchange
+     * @return ExchangeFactory
      */
-    public function exchange(string $name): Exchange
+    public function exchange(string $name): ExchangeFactory
     {
-        return new Exchange($this->channel, $name);
+        return new ExchangeFactory($this->channel, $name);
     }
 
     /**
      * Create Queue Operate
      * @param string $name queue name
-     * @return Queue
+     * @return QueueFactory
      */
-    public function queue(string $name): Queue
+    public function queue(string $name): QueueFactory
     {
-        return new Queue($this->channel, $name);
+        return new QueueFactory($this->channel, $name);
     }
 
     /**
      * Create Consumer Operate
      * @param string $name cusumer name
-     * @return Consumer
+     * @return ConsumerFactory
      */
-    public function consumer(string $name): Consumer
+    public function consumer(string $name): ConsumerFactory
     {
-        return new Consumer($this->channel, $name);
+        return new ConsumerFactory($this->channel, $name);
     }
 }

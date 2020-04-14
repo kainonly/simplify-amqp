@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace simplify\amqp\common;
+namespace Simplify\AMQP\Factory;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
 /**
  * Class Type
- * @package simplify\amqp\common
+ * @package Simplify\AMQP\Factory
  */
-abstract class Type
+abstract class BaseFactory
 {
     /**
      * Operate Channel
      * @var AMQPChannel
      */
-    protected $channel;
+    protected AMQPChannel $channel;
 
     /**
      * Operate Name
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * Type constructor.

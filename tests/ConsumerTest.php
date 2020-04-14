@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace SimplifyTests;
 
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
-use simplify\amqp\AMQPManager;
+use Simplify\AMQP\AMQPManager;
 
 class ConsumerTest extends Base
 {
