@@ -6,15 +6,15 @@ namespace SimplifyTests;
 use Exception;
 use Simplify\AMQP\AMQPManager;
 
-class ExchangeTest extends Base
+class ExchangeTest extends BaseTest
 {
-    private $exchangeName;
-    private $exchangeOtherName;
-    private $queueName;
+    private string $exchangeName;
+    private string $exchangeOtherName;
+    private string $queueName;
 
-    protected function setUp(): void
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::setUp();
+        parent::__construct($name, $data, $dataName);
         $this->exchangeName = 'exchange1-' . md5('exchange');
         $this->exchangeOtherName = 'exchange2-' . md5('exchange');
         $this->queueName = 'queue-' . md5('exchange');

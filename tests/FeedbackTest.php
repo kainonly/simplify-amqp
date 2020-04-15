@@ -7,13 +7,13 @@ use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
-class FeedbackTest extends Base
+class FeedbackTest extends BaseTest
 {
-    private $queueName;
+    private string $queueName;
 
-    protected function setUp(): void
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::setUp();
+        parent::__construct($name, $data, $dataName);
         $this->queueName = 'queue-' . md5('feedback');
     }
 
@@ -45,7 +45,7 @@ class FeedbackTest extends Base
                 sleep(1);
                 $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
-                $this->assertEquals($message->getBody(), 'Test');
+                $this->assertSame($message->getBody(), 'Test');
                 $manager->nack($message->getDeliveryTag());
             });
         } catch (Exception $e) {
@@ -65,7 +65,7 @@ class FeedbackTest extends Base
                 sleep(1);
                 $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
-                $this->assertEquals($message->getBody(), 'Test');
+                $this->assertSame($message->getBody(), 'Test');
                 $manager->reject($message->getDeliveryTag());
             });
         } catch (Exception $e) {

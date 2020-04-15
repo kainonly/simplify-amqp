@@ -7,14 +7,14 @@ use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
-class QueueTest extends Base
+class QueueTest extends BaseTest
 {
-    private $exchangeName;
-    private $queueName;
+    private string $exchangeName;
+    private string $queueName;
 
-    protected function setUp(): void
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::setUp();
+        parent::__construct($name, $data, $dataName);
         $this->exchangeName = 'exchange-' . md5('queue');
         $this->queueName = 'queue-' . md5('queue');
     }
@@ -39,9 +39,11 @@ class QueueTest extends Base
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->publish(
-                    new AMQPMessage(json_encode([
-                        "name" => "kain"
-                    ])),
+                    new AMQPMessage(
+                        json_encode([
+                            "name" => "kain"
+                        ])
+                    ),
                     '',
                     $this->queueName
                 );
@@ -59,7 +61,7 @@ class QueueTest extends Base
                 $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
-                $this->assertEquals($data->name, 'kain');
+                $this->assertSame($data->name, 'kain');
                 $manager->ack($message->getDeliveryTag());
             });
         } catch (Exception $e) {
@@ -122,7 +124,7 @@ class QueueTest extends Base
                     ->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
-                $this->assertEquals($data->type, 'bind');
+                $this->assertSame($data->type, 'bind');
                 $manager->ack($message->getDeliveryTag());
             });
         } catch (Exception $e) {

@@ -8,7 +8,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Simplify\AMQP\AMQPManager;
 
-class MainTest extends Base
+class MainTest extends BaseTest
 {
     public function testGetConnection()
     {

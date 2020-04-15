@@ -7,14 +7,14 @@ use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
-class ConsumerTest extends Base
+class ConsumerTest extends BaseTest
 {
-    private $queueName;
-    private $consumerName;
+    private string $queueName;
+    private string $consumerName;
 
-    protected function setUp(): void
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::setUp();
+        parent::__construct($name, $data, $dataName);
         $this->queueName = 'queue-' . md5('consumer');
         $this->consumerName = 'consumer-' . md5('consumer');
     }
@@ -63,7 +63,7 @@ class ConsumerTest extends Base
                     ->subscribe($this->queueName, function (AMQPMessage $msg) use ($manager, &$always) {
                         $this->assertNotEmpty($msg);
                         $data = json_decode($msg->getBody());
-                        $this->assertEquals($data->name, 'kain');
+                        $this->assertSame($data->name, 'kain');
                         $manager->ack($msg->getDeliveryTag());
                         $always = false;
                     });

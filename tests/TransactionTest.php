@@ -7,13 +7,13 @@ use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
 
-class TransactionTest extends Base
+class TransactionTest extends BaseTest
 {
-    private $queueName;
+    private string $queueName;
 
-    protected function setUp(): void
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::setUp();
+        parent::__construct($name, $data, $dataName);
         $this->queueName = 'queue-' . md5('transaction');
     }
 
@@ -60,7 +60,7 @@ class TransactionTest extends Base
                 $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
-                $this->assertEquals($data->name, 'kain');
+                $this->assertSame($data->name, 'kain');
                 $manager->ack($message->getDeliveryTag());
             });
         } catch (Exception $e) {

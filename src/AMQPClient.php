@@ -21,28 +21,28 @@ class AMQPClient
 
     /**
      * Client constructor.
-     * @param string $hostname
+     * @param string $host
      * @param int $port
      * @param string $username
      * @param string $password
-     * @param string $virualhost
+     * @param string $vhost
      * @param array $options Connection Options
      */
     public function __construct(
-        string $hostname,
+        string $host,
         int $port,
         string $username,
         string $password,
-        string $virualhost = '/',
+        string $vhost = '/',
         array $options = []
     )
     {
         $this->connection = new AMQPStreamConnection(
-            $hostname,
+            $host,
             $port,
             $username,
             $password,
-            $virualhost,
+            $vhost,
             $options['insist'] ?? false,
             $options['login_method'] ?? 'AMQPLAIN',
             $options['login_response'] ?? null,
