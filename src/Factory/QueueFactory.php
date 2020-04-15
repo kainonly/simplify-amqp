@@ -30,32 +30,34 @@ class QueueFactory extends BaseFactory
 
     /**
      * Bind Exchange
-     * @param string $exchangeName exchange name
-     * @param array $options
+     * @param string $exchange
+     * @param string $routing_key
+     * @param array $arguments
      */
-    public function bind(string $exchangeName, array $options = []): void
+    public function bind(string $exchange, string $routing_key = '', array $arguments = []): void
     {
         $this->channel->queue_bind(
             $this->name,
-            $exchangeName,
-            $options['routing_key'] ?? '',
+            $exchange,
+            $routing_key,
             false,
-            $options['arguments'] ?? []
+            $arguments
         );
     }
 
     /**
      * Unbind Exchange
-     * @param string $exchangeName exchange name
-     * @param array $options
+     * @param string $exchange
+     * @param string $routing_key
+     * @param array $arguments
      */
-    public function unbind(string $exchangeName, array $options = []): void
+    public function unbind(string $exchange, string $routing_key = '', array $arguments = []): void
     {
         $this->channel->queue_unbind(
             $this->name,
-            $exchangeName,
-            $options['routing_key'] ?? '',
-            $options['arguments'] ?? []
+            $exchange,
+            $routing_key,
+            $arguments
         );
     }
 
@@ -77,14 +79,14 @@ class QueueFactory extends BaseFactory
 
     /**
      * Get Queue Message
-     * @param array $options
-     * @return AMQPMessage|null
+     * @param bool $no_ack
+     * @return AMQPMessage
      */
-    public function get(array $options = []): ?AMQPMessage
+    public function get(bool $no_ack = false): AMQPMessage
     {
         return $this->channel->basic_get(
             $this->name,
-            $options['no_ack'] ?? false
+            $no_ack
         );
     }
 }

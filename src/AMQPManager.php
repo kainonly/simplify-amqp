@@ -40,21 +40,23 @@ class AMQPManager
      * @param AMQPMessage $message Message Body
      * @param string $exchange
      * @param string $routing_key
-     * @param array $options
+     * @param bool $mandatory
+     * @param bool $immediate
      */
     public function publish(
         AMQPMessage $message,
         string $exchange,
         string $routing_key,
-        array $options = []
+        bool $mandatory = false,
+        bool $immediate = false
     ): void
     {
         $this->channel->basic_publish(
             $message,
             $exchange,
             $routing_key,
-            $options['mandatory'] ?? false,
-            $options['immediate'] ?? false,
+            $mandatory,
+            $immediate
         );
     }
 
