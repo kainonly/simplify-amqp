@@ -4,7 +4,8 @@
   "require": {
     "php": ">=7.4",
     "ext-json": "*",
-    "php-amqplib/php-amqplib": "^2.0"
+    "php-amqplib/php-amqplib": "^2.0",
+    "myclabs/php-enum": "^1.7"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",

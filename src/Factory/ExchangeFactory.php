@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 namespace Simplify\AMQP\Factory;
+
+use Simplify\AMQP\Common\ExchangeCreateOption;
+
 /**
  * Class Exchange
  * @package Simplify\AMQP\Factory
@@ -10,20 +13,19 @@ class ExchangeFactory extends BaseFactory
 {
     /**
      * declare exchange
-     * @param string $type exchange type
-     * @param array $options exchange options
+     * @param ExchangeCreateOption $option
      */
-    public function create(string $type, array $options = []): void
+    public function create(ExchangeCreateOption $option): void
     {
         $this->channel->exchange_declare(
             $this->name,
-            $type,
-            $options['passive'] ?? false,
-            $options['durable'] ?? true,
-            $options['auto_delete'] ?? false,
-            $options['internal'] ?? false,
+            $option->getType()->getValue(),
+            $option->isPassive(),
+            $option->isDurable(),
+            $option->isAutoDelete(),
+            $option->isInternal(),
             false,
-            $options['arguments'] ?? []
+            $option->getArguments()
         );
     }
 

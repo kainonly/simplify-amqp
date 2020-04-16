@@ -5,6 +5,8 @@ namespace SimplifyTests;
 
 use Exception;
 use Simplify\AMQP\AMQPManager;
+use Simplify\AMQP\Common\ExchangeCreateOption;
+use Simplify\AMQP\Common\ExchangeType;
 
 class ExchangeTest extends BaseTest
 {
@@ -24,10 +26,11 @@ class ExchangeTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new ExchangeCreateOption();
+                $option->setType(ExchangeType::DIRECT());
+                $option->setDurable(true);
                 $manager->exchange($this->exchangeName)
-                    ->create('direct', [
-                        'durable' => true
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -39,10 +42,11 @@ class ExchangeTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new ExchangeCreateOption();
+                $option->setType(ExchangeType::TOPIC());
+                $option->setDurable(true);
                 $manager->exchange($this->exchangeOtherName)
-                    ->create('direct', [
-                        'durable' => true
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {

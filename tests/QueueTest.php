@@ -6,6 +6,9 @@ namespace SimplifyTests;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
+use Simplify\AMQP\Common\ExchangeCreateOption;
+use Simplify\AMQP\Common\ExchangeType;
+use Simplify\AMQP\Common\QueueCreateOption;
 
 class QueueTest extends BaseTest
 {
@@ -23,10 +26,10 @@ class QueueTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new QueueCreateOption();
+                $option->setDurable(false);
                 $manager->queue($this->queueName)
-                    ->create([
-                        'durable' => true
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -73,10 +76,11 @@ class QueueTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new ExchangeCreateOption();
+                $option->setType(ExchangeType::DIRECT());
+                $option->setDurable(false);
                 $manager->exchange($this->exchangeName)
-                    ->create('direct', [
-                        'durable' => true
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -88,9 +92,12 @@ class QueueTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->queue($this->queueName)->bind($this->exchangeName, [
-                    'routing_key' => 'simpliy'
-                ]);
+                $manager
+                    ->queue($this->queueName)
+                    ->bind(
+                        $this->exchangeName,
+                        'simpliy'
+                    );
                 $this->assertNull(null);
             });
         } catch (Exception $e) {
@@ -136,9 +143,12 @@ class QueueTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->queue($this->queueName)->unbind($this->exchangeName, [
-                    'routing_key' => 'simpliy'
-                ]);
+                $manager
+                    ->queue($this->queueName)
+                    ->unbind(
+                        $this->exchangeName,
+                        'simpliy'
+                    );
                 $this->assertNull(null);
             });
         } catch (Exception $e) {

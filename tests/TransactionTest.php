@@ -6,6 +6,7 @@ namespace SimplifyTests;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
+use Simplify\AMQP\Common\QueueCreateOption;
 
 class TransactionTest extends BaseTest
 {
@@ -21,10 +22,10 @@ class TransactionTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new QueueCreateOption();
+                $option->setDurable(false);
                 $manager->queue($this->queueName)
-                    ->create([
-                        'durable' => true
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {

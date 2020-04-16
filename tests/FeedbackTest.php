@@ -6,6 +6,7 @@ namespace SimplifyTests;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Simplify\AMQP\AMQPManager;
+use Simplify\AMQP\Common\QueueCreateOption;
 
 class FeedbackTest extends BaseTest
 {
@@ -21,11 +22,10 @@ class FeedbackTest extends BaseTest
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
+                $option = new QueueCreateOption();
+                $option->setAutoDelete(false);
                 $manager->queue($this->queueName)
-                    ->create([
-                        'durable' => true,
-                        'auto_delete' => false
-                    ]);
+                    ->create($option);
                 $this->assertNull(null);
             });
         } catch (Exception $e) {

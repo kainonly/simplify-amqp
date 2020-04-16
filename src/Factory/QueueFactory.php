@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Simplify\AMQP\Factory;
 
 use PhpAmqpLib\Message\AMQPMessage;
+use Simplify\AMQP\Common\QueueCreateOption;
 
 /**
  * Class Queue
@@ -13,18 +14,18 @@ class QueueFactory extends BaseFactory
 {
     /**
      * Declare Queue
-     * @param array $options
+     * @param QueueCreateOption $option
      */
-    public function create(array $options = []): void
+    public function create(QueueCreateOption $option): void
     {
         $this->channel->queue_declare(
             $this->name,
-            $options['passive'] ?? false,
-            $options['durable'] ?? true,
-            $options['exclusive'] ?? false,
-            $options['auto_delete'] ?? false,
+            $option->isPassive(),
+            $option->isDurable(),
+            $option->isExclusive(),
+            $option->isAutoDelete(),
             false,
-            $options['arguments'] ?? []
+            $option->getArguments()
         );
     }
 
