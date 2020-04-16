@@ -10,17 +10,10 @@ use Simplify\AMQP\Common\QueueCreateOption;
 
 class ConsumerTest extends BaseTest
 {
-    private string $queueName;
-    private string $consumerName;
+    private string $queueName = 'simplify-queue-021';
+    private string $consumerName = 'simplify-consumer-021';
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->queueName = 'queue-' . md5('consumer');
-        $this->consumerName = 'consumer-' . md5('consumer');
-    }
-
-    public function testCreateQueue()
+    public function testCreateQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -29,36 +22,32 @@ class ConsumerTest extends BaseTest
                 $option->setAutoDelete(false);
                 $option->setAutoExpire(1000 * 30);
                 $option->setQueueLazyMode();
-                $manager->queue($this->queueName)
-                    ->create($option);
-                $this->assertNull(null);
+                $manager->queue($this->queueName)->create($option);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPublishMessage()
+    public function testPublishMessage(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->publish(
-                    new AMQPMessage(
-                        json_encode([
-                            "name" => "kain"
-                        ])
-                    ),
-                    '',
-                    $this->queueName
+                $message = new AMQPMessage(
+                    json_encode([
+                        "name" => "kain"
+                    ])
                 );
-                $this->assertNull(null);
+                $manager->publish($message, '', $this->queueName);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testSubscribe()
+    public function testSubscribe(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -74,7 +63,7 @@ class ConsumerTest extends BaseTest
                 $channel = $manager->getChannel();
                 while ($channel->is_consuming() && $always) {
                     $channel->wait();
-                    $this->assertNull(null);
+                    $this->assertTrue(true);
                 }
             });
         } catch (Exception $e) {
@@ -82,26 +71,24 @@ class ConsumerTest extends BaseTest
         }
     }
 
-    public function testUnsubscribe()
+    public function testUnsubscribe(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->consumer($this->consumerName)
-                    ->unsubscribe();
-                $this->assertNull(null);
+                $manager->consumer($this->consumerName)->unsubscribe();
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDeleteQueue()
+    public function testDeleteQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->queue($this->queueName)
-                    ->delete();
-                $this->assertNull(null);
+                $manager->queue($this->queueName)->delete();
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());

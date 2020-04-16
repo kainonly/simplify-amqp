@@ -12,17 +12,10 @@ use Simplify\AMQP\Common\QueueCreateOption;
 
 class QueueTest extends BaseTest
 {
-    private string $exchangeName;
-    private string $queueName;
+    private string $exchangeName = 'simplify-exchange-001';
+    private string $queueName = 'simplify-queue-001';
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->exchangeName = 'exchange-' . md5('queue');
-        $this->queueName = 'queue-' . md5('queue');
-    }
-
-    public function testCreateQueue()
+    public function testCreateQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -30,34 +23,29 @@ class QueueTest extends BaseTest
                 $option->setDurable(false);
                 $manager->queue($this->queueName)
                     ->create($option);
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPublishMessage()
+    public function testPublishMessage(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->publish(
-                    new AMQPMessage(
-                        json_encode([
-                            "name" => "kain"
-                        ])
-                    ),
-                    '',
-                    $this->queueName
-                );
-                $this->assertNull(null);
+                $message = new AMQPMessage(json_encode([
+                    "name" => "kain"
+                ]));
+                $manager->publish($message, '', $this->queueName);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGetQueueMessage()
+    public function testGetQueueMessage(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -72,7 +60,7 @@ class QueueTest extends BaseTest
         }
     }
 
-    public function testCreateExchange()
+    public function testCreateExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -81,54 +69,47 @@ class QueueTest extends BaseTest
                 $option->setDurable(false);
                 $manager->exchange($this->exchangeName)
                     ->create($option);
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testBindQueue()
+    public function testBindQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager
                     ->queue($this->queueName)
-                    ->bind(
-                        $this->exchangeName,
-                        'simpliy'
-                    );
-                $this->assertNull(null);
+                    ->bind($this->exchangeName, 'simpliy');
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPublishBindMessage()
+    public function testPublishBindMessage(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->publish(
-                    new AMQPMessage(json_encode([
-                        "type" => "bind"
-                    ])),
-                    $this->exchangeName,
-                    'simpliy'
-                );
-                $this->assertNull(null);
+                $message = new AMQPMessage(json_encode([
+                    "type" => "bind"
+                ]));
+                $manager->publish($message, $this->exchangeName, 'simpliy');
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGetQueueBindMessage()
+    public function testGetQueueBindMessage(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $message = $manager->queue($this->queueName)
-                    ->get();
+                $message = $manager->queue($this->queueName)->get();
                 $this->assertNotEmpty($message);
                 $data = json_decode($message->getBody());
                 $this->assertSame($data->type, 'bind');
@@ -139,53 +120,50 @@ class QueueTest extends BaseTest
         }
     }
 
-    public function testUnbindQueue()
+    public function testUnbindQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager
                     ->queue($this->queueName)
-                    ->unbind(
-                        $this->exchangeName,
-                        'simpliy'
-                    );
-                $this->assertNull(null);
+                    ->unbind($this->exchangeName, 'simpliy');
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPurgeQueue()
+    public function testPurgeQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)->purge();
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDeleteExchange()
+    public function testDeleteExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeName)->delete();
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDeleteQueue()
+    public function testDeleteQueue(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->queue($this->queueName)->delete();
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());

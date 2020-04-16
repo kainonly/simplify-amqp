@@ -206,4 +206,13 @@ class QueueCreateOption
     {
         return $this->arguments;
     }
+
+    /**
+     * @param string $key
+     * @param $value
+     */
+    public function appendArgument(string $key, $value): void
+    {
+        $this->arguments[$key] = $value;
+    }
 }

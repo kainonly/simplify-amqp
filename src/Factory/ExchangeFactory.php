@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Simplify\AMQP\Factory;
 
+use PhpAmqpLib\Wire\AMQPTable;
 use Simplify\AMQP\Common\ExchangeCreateOption;
 
 /**
@@ -25,39 +26,41 @@ class ExchangeFactory extends BaseFactory
             $option->isAutoDelete(),
             $option->isInternal(),
             false,
-            $option->getArguments()
+            new AMQPTable($option->getArguments())
         );
     }
 
     /**
      * bind exchange
      * @param string $destination dest exchange
-     * @param array $options
+     * @param string $routing_key
+     * @param array $arguments
      */
-    public function bind(string $destination, array $options = []): void
+    public function bind(string $destination, string $routing_key = '', array $arguments = []): void
     {
         $this->channel->exchange_bind(
             $destination,
             $this->name,
-            $options['routing_key'] ?? '',
+            $routing_key,
             false,
-            $options['arguments'] ?? []
+            new AMQPTable($arguments)
         );
     }
 
     /**
      * unbind exchange
      * @param string $destination dest exchange
-     * @param array $options
+     * @param string $routing_key
+     * @param array $arguments
      */
-    public function unbind(string $destination, array $options = []): void
+    public function unbind(string $destination, string $routing_key = '', array $arguments = []): void
     {
         $this->channel->exchange_unbind(
             $destination,
             $this->name,
-            $options['routing_key'] ?? '',
+            $routing_key,
             false,
-            $options['arguments'] ?? [],
+            new AMQPTable($arguments),
         );
     }
 

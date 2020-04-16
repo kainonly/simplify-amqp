@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Simplify\AMQP\Factory;
 
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Wire\AMQPTable;
 use Simplify\AMQP\Common\QueueCreateOption;
 
 /**
@@ -25,7 +26,7 @@ class QueueFactory extends BaseFactory
             $option->isExclusive(),
             $option->isAutoDelete(),
             false,
-            $option->getArguments()
+            new AMQPTable($option->getArguments())
         );
     }
 
@@ -42,7 +43,7 @@ class QueueFactory extends BaseFactory
             $exchange,
             $routing_key,
             false,
-            $arguments
+            new AMQPTable($arguments)
         );
     }
 
@@ -58,7 +59,7 @@ class QueueFactory extends BaseFactory
             $this->name,
             $exchange,
             $routing_key,
-            $arguments
+            new AMQPTable($arguments)
         );
     }
 

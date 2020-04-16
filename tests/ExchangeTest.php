@@ -10,35 +10,26 @@ use Simplify\AMQP\Common\ExchangeType;
 
 class ExchangeTest extends BaseTest
 {
-    private string $exchangeName;
-    private string $exchangeOtherName;
-    private string $queueName;
+    private string $exchangeName = 'simplify-exchange-011';
+    private string $exchangeOtherName = 'simplify-exchange-012';
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->exchangeName = 'exchange1-' . md5('exchange');
-        $this->exchangeOtherName = 'exchange2-' . md5('exchange');
-        $this->queueName = 'queue-' . md5('exchange');
-    }
-
-    public function testCreateExchange()
+    public function testCreateExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $option = new ExchangeCreateOption();
                 $option->setType(ExchangeType::DIRECT());
-                $option->setDurable(true);
+                $option->setDurable(false);
                 $manager->exchange($this->exchangeName)
                     ->create($option);
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testCreateOtherExchange()
+    public function testCreateOtherExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
@@ -47,63 +38,57 @@ class ExchangeTest extends BaseTest
                 $option->setDurable(true);
                 $manager->exchange($this->exchangeOtherName)
                     ->create($option);
-                $this->assertNull(null);
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testBindExchange()
+    public function testBindExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeName)
-                    ->bind($this->exchangeOtherName, [
-                        'routing_key' => 'simpliy'
-                    ]);
-                $this->assertNull(null);
+                    ->bind($this->exchangeOtherName, 'simpliy');
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testUnbindExchange()
+    public function testUnbindExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
                 $manager->exchange($this->exchangeName)
-                    ->unbind($this->exchangeOtherName, [
-                        'routing_key' => 'simpliy'
-                    ]);
-                $this->assertNull(null);
+                    ->unbind($this->exchangeOtherName, 'simpliy');
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDeleteExchange()
+    public function testDeleteExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->exchange($this->exchangeName)
-                    ->delete();
-                $this->assertNull(null);
+                $manager->exchange($this->exchangeName)->delete();
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDeleteOtherExchange()
+    public function testDeleteOtherExchange(): void
     {
         try {
             $this->client->channel(function (AMQPManager $manager) {
-                $manager->exchange($this->exchangeOtherName)
-                    ->delete();
-                $this->assertNull(null);
+                $manager->exchange($this->exchangeOtherName)->delete();
+                $this->assertTrue(true);
             });
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());

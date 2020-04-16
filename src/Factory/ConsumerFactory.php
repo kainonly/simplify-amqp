@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Simplify\AMQP\Factory;
 
 use Closure;
+use PhpAmqpLib\Wire\AMQPTable;
 
 /**
  * Class Consumer
@@ -16,21 +17,31 @@ class ConsumerFactory extends BaseFactory
      * Subscribe
      * @param string $queueName queue name
      * @param Closure $subscribe Subscribe
-     * @param array $options
-     * @return mixed|string
+     * @param bool $no_local
+     * @param bool $no_ack
+     * @param bool $exclusive
+     * @param array $arguments
+     * @return string
      */
-    public function subscribe(string $queueName, Closure $subscribe, array $options = [])
+    public function subscribe(
+        string $queueName,
+        Closure $subscribe,
+        bool $no_local = false,
+        bool $no_ack = false,
+        bool $exclusive = false,
+        array $arguments = []
+    ): string
     {
         return $this->channel->basic_consume(
             $queueName,
             $this->name,
-            $options['no_local'] ?? false,
-            $options['no_ack'] ?? false,
-            $options['exclusive'] ?? false,
+            $no_local,
+            $no_ack,
+            $exclusive,
             false,
             $subscribe,
             null,
-            $options['arguments'] ?? []
+            new AMQPTable($arguments)
         );
     }
 

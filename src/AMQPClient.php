@@ -61,7 +61,7 @@ class AMQPClient
      * get connection
      * @return AMQPStreamConnection
      */
-    public function getConnection(): AMQPStreamConnection
+    public function getAMQPStreamConnection(): AMQPStreamConnection
     {
         return $this->connection;
     }
