@@ -20,23 +20,60 @@ composer require kain/simplify-amqp
 Create an AMQP client
 
 ```php
+use Simplify\AMQP\AMQPClient;
+use Simplify\AMQP\AMQPManager;
+
 $client = new AMQPClient(
-  $hostname,
-  $port,
-  $username,
-  $password
+    'localhost',
+    5672,
+    'guest',
+    'guest',
+    '/',
+    [
+        'insist' => false,
+        'login_method' => 'AMQPLAIN',
+        'login_response' => null,
+        'locale' => 'zh_CN',
+        'connection_timeout' => 5.0,
+        'read_write_timeout' => 5.0,
+        'context' => null,
+        'keepalive' => true,
+        'heartbeat' => 3.0,
+        'channel_rpc_timeout' => 5.0,
+        'ssl_protocol' => null
+    ]
 );
 
-$client->channel(function (AMQPManager $manager) {});
-```
-
-Declare a exchange
-
-```php
 $client->channel(function (AMQPManager $manager) {
-    $manager->exchange('anyone')
-        ->setDeclare('direct', [
-            'durable' => true
-        ]);
+    // operate...
 });
 ```
+
+Create exchange and queue, and then bind them together
+
+```php
+use Simplify\AMQP\AMQPClient;
+use Simplify\AMQP\AMQPManager;
+use Simplify\AMQP\Common\ExchangeCreateOption;
+use Simplify\AMQP\Common\ExchangeType;
+use Simplify\AMQP\Common\QueueCreateOption;
+
+$client = new AMQPClient('localhost',5672,'guest','guest');
+
+$client->channel(function (AMQPManager $manager) {
+    $exchangeOption = new ExchangeCreateOption();
+    $exchangeOption->setType(ExchangeType::DIRECT());    
+    $exchangeOption->setDurable(true);
+    $manager->exchange('myexchange')->create($exchangeOption);
+    
+    $queueOption = new QueueCreateOption();
+    $queueOption->setDurable(true);
+    $queueOption->setMaxLength(3000);
+    $queueOption->setMaxLengthBytes(1024*64);
+    $queue = $manager->queue('myqueue');
+    $queue->create($queueOption);
+    $queue->bind('myexchange','');
+});
+```
+
+> For more examples, please see unit testing
