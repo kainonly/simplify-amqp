@@ -30,11 +30,14 @@ abstract class BaseTest extends TestCase
                 'locale' => 'zh_CN',
                 'connection_timeout' => 5.0,
                 'read_write_timeout' => 5.0,
-                'context' => null,
-                'keepalive' => true,
-                'heartbeat' => 3.0,
-                'channel_rpc_timeout' => 5.0,
-                'ssl_protocol' => null
+                'context' => AMQPClient::SSLContext([
+                    'cafile' => '',
+                    'verify_peer' => false
+                ]),
+                'keepalive' => false,
+                'heartbeat' => 0.0,
+                'channel_rpc_timeout' => 0.0,
+                'ssl_protocol' => 'ssl'
             ]
         );
     }
